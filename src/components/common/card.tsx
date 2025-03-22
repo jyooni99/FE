@@ -8,7 +8,10 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 //rounded-2xl bg-mauve12 shadow-md p-6 mb-4
 const Card = ({ className, ...props }: CardProps) => (
   <div
-    className={cn('w-[385px] p-3 bg-gray-warm-800 rounded-lg mb-2', className)}
+    className={cn(
+      'w-full p-[10px] bg-gray-warm-800 rounded-lg mb-2',
+      className,
+    )}
     {...props}
   />
 );

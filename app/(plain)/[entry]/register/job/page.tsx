@@ -6,8 +6,8 @@ import RegisterTemplete from '~/components/register/register-templete';
 const RegisterJob = () => {
   return (
     <RegisterTemplete
-      title="프로필을 입력해주세요."
-      subtitle="해당 정보는 온라인 명함에 반영됩니다."
+      title="🎉 컨퍼런스 사전 등록"
+      subtitle={`행사 기간 동안 세션 출입, 네트워킹, 온라인 명함 교환 등 다양한 활동을 원활하게 이용하시려면 사전 등록이 필요합니다.`}
     >
       <JobSelect />
     </RegisterTemplete>

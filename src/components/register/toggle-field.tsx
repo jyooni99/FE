@@ -17,6 +17,7 @@ interface ToggleFieldProps<T extends FieldValues> {
   minSelection?: number;
   maxSelection?: number;
   toggleVariants?: 'black' | 'primary';
+  className?: string;
 }
 
 const ToggleField = <T extends FieldValues>({
@@ -28,11 +29,12 @@ const ToggleField = <T extends FieldValues>({
   minSelection = 1,
   maxSelection = 1,
   toggleVariants = 'primary',
+  className,
 }: ToggleFieldProps<T>) => {
   const { setError, setValue } = useFormContext();
 
   return (
-    <div className="mb-12">
+    <div className={`mb-12 ${className}`}>
       {label && (
         <div className="flex gap-3 content-center">
           <div className="w-6 h-6 border border-dashed border-[#02e473]" />

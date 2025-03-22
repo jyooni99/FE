@@ -121,23 +121,39 @@ const TopNavigation = () => {
           </>
         )}
 
-        {type === 'user-info' ||
-          (type === 'modify-profile' && (
-            <>
-              <div className="flex items-center gap-2 justify-start">
-                <Link href="/notifications">
-                  <Image
-                    src="/assets/svgs/BackArrow.svg"
-                    alt="BackArrow Icon"
-                    width={24}
-                    height={24}
-                  />
-                </Link>
-                <p className="text-lg font-semibold text-white">뒤로 가기</p>
-              </div>
-            </>
-          ))}
+        {(type === 'user-info' ||
+          type === 'modify-profile' ||
+          type === 'name-card-list') && (
+          <>
+            <div className="w-full m-auto flex items-center gap-2 justify-starts">
+              <Link
+                href={
+                  type === 'user-info'
+                    ? '/notifications'
+                    : type === 'name-card-list'
+                      ? '/mypage'
+                      : '/mypage'
+                }
+              >
+                <Image
+                  src="/assets/svgs/back-arrow.svg"
+                  alt="BackArrow Icon"
+                  width={24}
+                  height={24}
+                />
+              </Link>
+              <p className="text-lg font-semibold text-white">
+                {type === 'user-info'
+                  ? '사용자 프로필'
+                  : type === 'modify-profile'
+                    ? '내 정보 수정'
+                    : '저장한 명함 목록'}
+              </p>
+            </div>
+          </>
+        )}
       </div>
+
       {showModal && (
         <Modal
           {...exitChatRoomModalProps}

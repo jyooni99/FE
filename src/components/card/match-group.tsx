@@ -21,22 +21,22 @@ const MatchGroup = ({ groupData }: MatchGroupProps) => {
   const infoList = [
     {
       title: '직무',
-      src: '/assets/svgs/ExitIcon.svg',
+      src: '/assets/svgs/exit-icon.svg',
       text: groupData.job[0] || '선택 안함',
     },
     {
       title: '경력',
-      src: '/assets/svgs/ExitIcon.svg',
+      src: '/assets/svgs/exit-icon.svg',
       text: groupData.career[0] || '선택 안함',
     },
     {
       title: '관심분야',
-      src: '/assets/svgs/ExitIcon.svg',
+      src: '/assets/svgs/exit-icon.svg',
       text: groupData.interest[0] || '선택 안함',
     },
     {
       title: '참여목적',
-      src: '/assets/svgs/ExitIcon.svg',
+      src: '/assets/svgs/exit-icon.svg',
       text: groupData.purpose[0] || '선택 안함',
     },
   ];

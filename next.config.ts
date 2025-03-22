@@ -7,7 +7,14 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_HTTP_API_URL}/:path*`,
+      },
+    ];
+  },
 };
 
 export default withPWA(nextConfig);

@@ -4,7 +4,6 @@ interface BadgesAlignedProps {
   vertical?: boolean;
   className?: string;
   noneChip?: boolean;
-  alignedOne?: boolean;
 }
 
 const BadgesAligned = ({
@@ -13,10 +12,7 @@ const BadgesAligned = ({
   vertical,
   className,
   noneChip,
-  alignedOne,
 }: BadgesAlignedProps) => {
-  const displayItems = alignedOne ? items?.slice(0, 1) : items;
-
   return (
     <div
       className={`gap-3 flex flex-col bg-[#333333] pb-0.5 rounded-xl ${className}`}
@@ -27,14 +23,11 @@ const BadgesAligned = ({
       <div
         className={`flex ${vertical ? 'flex-col' : 'flex-row gap-2'} flex-wrap `}
       >
-        {displayItems?.map((item: string, index: number) => (
-          <p
-            key={index}
-            className={`w-fit px-2 text-body-sm rounded-md text-white ${noneChip ? 'bg-transparent py-1 text-gray-neutral-300' : 'bg-gray-neutral-600'}`}
-          >
-            {item.length > 19 ? `${item.slice(0, 19)}...` : item}
-          </p>
-        ))}
+        <p
+          className={`w-fit px-2 text-body-sm rounded-md text-white ${noneChip ? 'bg-transparent text-orange-500 py-1' : 'bg-gray-neutral-600'}`}
+        >
+          {items.length > 19 ? `${items.slice(0, 19)}...` : items}
+        </p>
       </div>
     </div>
   );

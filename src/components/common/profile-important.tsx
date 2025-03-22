@@ -56,9 +56,9 @@ const ProfileImportant = ({
         >
           {userData.name}
         </h3>
-        <div className="flex items-center gap-2 text-body-sm">
+        <div className="flex items-center gap-2 text-body-sm text-[#b0b0b0]">
           <p>{userData.position}</p>
-          <div className="w-px h-4 bg-gray-500" />
+          <div className="w-px h-4" />
           <p>{userData.joinedAt}</p>
         </div>
 

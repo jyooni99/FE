@@ -8,9 +8,17 @@ import {
 } from '../notifications/notify-card';
 import CardNotifyProps from '~/types/card-notify';
 
-const NormalCard = ({ message, subMessage, timeStamp }: CardNotifyProps) => {
+const NormalCard = ({
+  message,
+  subMessage,
+  timeStamp,
+  className,
+  isDisabled,
+}: CardNotifyProps) => {
   return (
-    <Card className="w-full max-w-3xl shadow-md rounded-lg mx-auto">
+    <Card
+      className={`w-full max-w-3xl shadow-md mb-2 rounded-lg mx-auto ${className} ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}
+    >
       <CardHeader className="flex justify-between items-center mb-4">
         <PushAlarm />
       </CardHeader>

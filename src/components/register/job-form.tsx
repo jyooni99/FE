@@ -2,6 +2,7 @@
 
 import Select from 'react-select';
 import { Controller, useForm, FormProvider } from 'react-hook-form';
+
 import { careerOptions, groupedJobOptions } from '~/constants/job-options';
 import Button from '~/components/common/button';
 import Input from '~/components/common/input';

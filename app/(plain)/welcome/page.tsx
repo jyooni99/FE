@@ -1,23 +1,25 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { QRCodeSVG } from 'qrcode.react';
+
 import Button from '~/components/common/button';
-import LoginForm from '~/components/login-form';
+import { useFormStore } from '~/stores/use-form-store';
 
 const Page = () => {
   const router = useRouter();
+  const { qrData } = useFormStore();
 
   return (
     <div className="flex flex-col gap-4 min-h-screen px-6 justify-center items-center">
-      <LoginForm />
+      <QRCodeSVG value={JSON.stringify(qrData)} />
       <Button
         size={'full'}
-        variant={'secondary'}
         onClick={() => {
-          router.push('/onsite/register');
+          router.push('/home');
         }}
       >
-        현장등록하기
+        네트워킹존 입장하기
       </Button>
     </div>
   );

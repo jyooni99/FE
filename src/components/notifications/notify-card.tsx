@@ -23,9 +23,11 @@ interface NotifyProps {
     requesterId: number;
     receiverId: number;
   };
+  className?: string;
+  isDisabled?: boolean;
 }
 
-const NotifyCard = ({ messageData }: NotifyProps) => {
+const NotifyCard = ({ messageData, className, isDisabled }: NotifyProps) => {
   const {
     message,
     subMessage,
@@ -39,6 +41,8 @@ const NotifyCard = ({ messageData }: NotifyProps) => {
   const router = useRouter();
 
   const handleAccept = async () => {
+    if (!isDisabled) return;
+
     const requesterId = Number(messageData?.requester?.id) || 1;
 
     const receiverId = messageData?.receiverId || 2; // 채팅 수락자 ID (디폴트 값 설정)
@@ -81,29 +85,32 @@ const NotifyCard = ({ messageData }: NotifyProps) => {
     }
   };
 
-  const notificationsToShow = () => {
-    if (status === 'request') {
-      return (
+  return (
+    <div
+      className={`relative ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}
+    >
+      {isDisabled && (
+        <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
+      )}
+      {status === 'request' ? (
         <RequestCard
           message={message}
           subMessage={subMessage}
           timeStamp={timeStamp}
           onAccept={handleAccept}
           requester={messageData.requester?.id}
+          className={className}
         />
-      );
-    } else {
-      return (
+      ) : (
         <NormalCard
           message={message}
           subMessage={subMessage}
           timeStamp={timeStamp}
+          className={className}
         />
-      );
-    }
-  };
-
-  return notificationsToShow();
+      )}
+    </div>
+  );
 };
 
 export default NotifyCard;

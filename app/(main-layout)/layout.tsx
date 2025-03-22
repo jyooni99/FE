@@ -7,7 +7,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-gray-neutral-900">
+    <div className="bg-gray-neutral-900 h-screen">
       <TopNavigation />
       {children}
       <BottomNavigation />

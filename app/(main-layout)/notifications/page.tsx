@@ -6,9 +6,11 @@ import NotifyBar from '~/components/notifications/notify-bar';
 import OneToOneNotifications from '~/components/notifications/one-to-one-notifications';
 import GroupNotifications from '~/components/notifications/group-notifications';
 import useNotifications from '~/hooks/use-notifications';
+import { useNetworkStore } from '~/stores/use-network-store';
 
 const NotificationsPage = () => {
   const messages = useNotifications();
+  const { isSubscribed } = useNetworkStore();
 
   const handleQuickConnectToggle = useCallback((isOn: boolean) => {
     console.log('Quick Connect toggled:', isOn);
@@ -19,9 +21,10 @@ const NotificationsPage = () => {
       <OneToOneNotifications
         messages={messages}
         handleQuickConnectToggle={handleQuickConnectToggle}
+        isDisabled={!isSubscribed}
       />
     ),
-    [messages, handleQuickConnectToggle],
+    [messages, handleQuickConnectToggle, isSubscribed],
   );
 
   const groupNotifications = useMemo(
@@ -29,9 +32,10 @@ const NotificationsPage = () => {
       <GroupNotifications
         messages={messages}
         handleQuickConnectToggle={handleQuickConnectToggle}
+        isDisabled={!isSubscribed}
       />
     ),
-    [messages, handleQuickConnectToggle],
+    [messages, handleQuickConnectToggle, isSubscribed],
   );
 
   const tabLabels = ['1:1', '그룹'];

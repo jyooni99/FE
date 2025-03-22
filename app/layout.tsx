@@ -2,9 +2,9 @@ import '~/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 
-const APP_NAME = 'Fast Network';
-const APP_DEFAULT_TITLE = 'Fast Network';
-const APP_TITLE_TEMPLATE = '%s - FastNetwork';
+const APP_NAME = 'Quick Network';
+const APP_DEFAULT_TITLE = 'Quick Network';
+const APP_TITLE_TEMPLATE = '%s - QuickNetwork';
 const APP_DESCRIPTION =
   '대규모 IT 행사 참가자를 위한 즉석 네트워킹 및 온라인 명함 교환 서비스';
 

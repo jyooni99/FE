@@ -18,9 +18,13 @@ const RequestCard = ({
   timeStamp,
   onAccept,
   requester,
+  className,
+  isDisabled,
 }: CardNotifyProps) => {
   return (
-    <Card className="w-full max-w-3xl  shadow-md rounded-lg mx-auto">
+    <Card
+      className={`w-full max-w-3xl  shadow-md rounded-lg mx-auto mb-2 ${className} ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}
+    >
       <CardHeader className="flex justify-between items-center mb-4">
         <TimeLeft text="매칭요청" />
         <Link href={`/user-info/${requester}`}>

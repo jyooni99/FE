@@ -10,6 +10,7 @@ import ToggleField from '~/components/register/toggle-field';
 import useFormSubmit from '~/utils/use-form-submit';
 import { customStyles } from '~/styles/react-select';
 import { groupedJobOptions } from '~/constants/job-options';
+import AgreeButton from './agree-button';
 
 const NetworkForm = () => {
   const MIN_SELECTION = 1; // 최소 선택 개수
@@ -34,7 +35,7 @@ const NetworkForm = () => {
           onSubmit={onSubmit}
           className="flex flex-col h-full justify-between"
         >
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-1 flex-col overflow-y-auto gap-5">
             <Controller
               name="purpose"
               control={control}
@@ -98,10 +99,13 @@ const NetworkForm = () => {
               maxSelection={MAX_SELECTION}
               toggleVariants="black"
             />
+            <AgreeButton />
           </div>
-          <Button className="py-3" disabled={!isValid}>
-            사전등록 완료!
-          </Button>
+          <div>
+            <Button className="py-3" disabled={!isValid}>
+              사전등록 완료!
+            </Button>
+          </div>
         </form>
       </div>
     </FormProvider>
