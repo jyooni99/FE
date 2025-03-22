@@ -147,9 +147,9 @@ interface TimeLeftProps {
 // ✼✼매칭요청 뱃지 시간 3분 가정하고 시간 흘러감..
 export const TimeLeft = ({ text }: TimeLeftProps) => {
   return (
-    <p className="inline-block bg-slate-900 px-3 py-1 text-body-sm rounded-3xl">
+    <p className="inline-block bg-gray-neutral-900 px-3 py-1 text-body-sm rounded-3xl">
       {text}
-      <span className="inline-block ml-2 text-red-600">2:59</span>
+      <span className="inline-block ml-2 text-orange-500">2:59</span>
     </p>
   );
 };

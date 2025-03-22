@@ -1,19 +1,19 @@
 import { create } from 'zustand';
 
 interface GroupMember {
-  id: string;
+  id: number;
   name?: string;
   profileImage?: string;
 }
 
 interface Group {
-  id: string; // 그룹 ID (채팅방 ID 역할)
+  id: number; // 그룹 ID (채팅방 ID 역할)
   members: GroupMember[];
 }
 
 interface GroupMatchState {
   groups: Group[];
-  addMemberToGroup: (groupId: string, member: GroupMember) => void;
+  addMemberToGroup: (groupId: number, member: GroupMember) => void;
 }
 
 export const useGroupMatchStore = create<GroupMatchState>((set) => ({

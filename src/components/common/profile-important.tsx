@@ -23,6 +23,7 @@ interface ProfileImportantProps
   userData: UserData;
   children?: React.ReactNode;
   isTopAligned?: boolean;
+  existsJob?: boolean;
 }
 
 const ProfileImportant = ({
@@ -30,6 +31,7 @@ const ProfileImportant = ({
   layout,
   children,
   className,
+  existsJob = true,
   isTopAligned = false,
   ...props
 }: ProfileImportantProps) => {
@@ -54,12 +56,16 @@ const ProfileImportant = ({
             layout === 'vertical' ? 'text-center' : 'text-left',
           )}
         >
-          {userData.name}
+          {userData.nickName}
         </h3>
         <div className="flex items-center gap-2 text-body-sm text-[#b0b0b0]">
-          <p>{userData.position}</p>
-          <div className="w-px h-4" />
-          <p>{userData.joinedAt}</p>
+          {existsJob && (
+            <>
+              <p> {userData.jobValue}</p>
+              <div className="w-px h-4" />
+            </>
+          )}
+          <p>{userData.career}</p>
         </div>
 
         {/* children 영역에 태그나 추가 정보 등을 넣을 수 있음 */}

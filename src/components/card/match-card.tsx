@@ -25,7 +25,7 @@ interface MatchCardProps {
 
 const MatchCard = ({
   userData,
-  inMyPage = false,
+  // inMyPage = false,
   isGroup = false,
   groupId,
 }: MatchCardProps) => {
@@ -33,15 +33,15 @@ const MatchCard = ({
 
   const handleJoinGroup = () => {
     console.log('추가..');
-    if (!groupId) return; // ✅ groupId가 undefined일 경우 함수 실행 안 함
+    if (typeof groupId === 'undefined') return null; // ✅ groupId가 undefined일 경우 함수 실행 안 함
 
-    addMemberToGroup(groupId.toString(), {
+    addMemberToGroup(groupId, {
       // ✅ number → string 변환
-      id: userData.id,
+      id: Number(userData.id),
     });
   };
 
-  const group = groups.find((g) => g.id === groupId?.toString());
+  const group = groups.find((g) => g.id === groupId);
   const members = group ? group.members.slice(0, 3) : [];
   const positionClass = [
     'right-4 z-10',
@@ -89,7 +89,7 @@ const MatchCard = ({
             }}
           />
         ) : (
-          <MatchOneToOne userData={userData} inMyPage={inMyPage} /> // ⬅ `inMyPage`를 직접 전달
+          <MatchOneToOne userData={userData} requestedNetwork={false} /> // ⬅ `inMyPage`를 직접 전달
         )}
       </CardBody>
     </Card>

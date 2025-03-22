@@ -1,6 +1,6 @@
 export const mockUserData = [
   {
-    id: 'test0321',
+    id: 321,
     username: '테스트 유저',
     password: 'securePassword',
     affiliation: '일반',
@@ -22,7 +22,7 @@ export const mockUserData = [
     nickName: 'IT4',
   },
   {
-    id: 'user1',
+    id: 331,
     username: '김철수',
     password: 'securePassword',
     affiliation: '일반2',
@@ -40,7 +40,7 @@ export const mockUserData = [
     nickName: '철수',
   },
   {
-    id: 'user2',
+    id: 5232,
     username: '이영희',
     password: 'securePassword',
     affiliation: '일반3',
@@ -58,7 +58,7 @@ export const mockUserData = [
     nickName: '영희',
   },
   {
-    id: 'user3',
+    id: 314,
     username: '박민수',
     password: 'securePassword',
     affiliation: '일반4',
