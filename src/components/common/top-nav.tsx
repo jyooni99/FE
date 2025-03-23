@@ -1,9 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 import ToggleSwitch from '~/components/common/switch';
 import Modal, { ModalProps } from '~/components/common/modal';
@@ -12,10 +11,10 @@ import { getTopNavType } from '~/utils/get-top-nav-type';
 import { ButtonVariantProps } from '~/components/common/button';
 
 const TopNavigation = () => {
-  const { isConnect, setIsConnect } = useNetworkStore();
   const pathname = usePathname();
-  const { type, title } = getTopNavType(pathname);
   const router = useRouter();
+  const { isConnect, setIsConnect } = useNetworkStore();
+  const { type, title } = getTopNavType(pathname);
   const [showModal, setShowModal] = useState(false);
 
   const handleExitChatRoom = () => {
@@ -79,16 +78,6 @@ const TopNavigation = () => {
         {type === 'default' && (
           <>
             <div className="flex gap-2">
-              {pathname === '/create-group' && (
-                <button onClick={() => router.back()}>
-                  <Image
-                    src="/assets/svgs/back-arrow.svg"
-                    alt="뒤로가기"
-                    width={24}
-                    height={24}
-                  />
-                </button>
-              )}
               <p className="text-lg font-semibold text-white">{title}</p>
             </div>
             <div className="flex gap-4">
@@ -121,34 +110,18 @@ const TopNavigation = () => {
           </>
         )}
 
-        {(type === 'user-info' ||
-          type === 'modify-profile' ||
-          type === 'name-card-list') && (
+        {type === 'back-arrow' && (
           <>
-            <div className="w-full m-auto flex items-center gap-2 justify-starts">
-              <Link
-                href={
-                  type === 'user-info'
-                    ? '/notifications'
-                    : type === 'name-card-list'
-                      ? '/mypage'
-                      : '/mypage'
-                }
-              >
+            <div className="flex gap-2">
+              <button onClick={() => router.back()}>
                 <Image
                   src="/assets/svgs/back-arrow.svg"
-                  alt="BackArrow Icon"
+                  alt="뒤로가기"
                   width={24}
                   height={24}
                 />
-              </Link>
-              <p className="text-lg font-semibold text-white">
-                {type === 'user-info'
-                  ? '사용자 프로필'
-                  : type === 'modify-profile'
-                    ? '내 정보 수정'
-                    : '저장한 명함 목록'}
-              </p>
+              </button>
+              <p className="text-lg font-semibold text-white">{title}</p>
             </div>
           </>
         )}

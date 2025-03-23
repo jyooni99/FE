@@ -60,7 +60,7 @@ export const useNetworkStore = create<UseNetworkStoreType>()(
     }),
     {
       name: 'network-storage',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

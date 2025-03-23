@@ -15,6 +15,7 @@ function useFormSubmit(redirect: string) {
 
   return async (data: PartialFormDataType) => {
     const updatedData = { ...data };
+    setFormData(updatedData);
 
     if (path.includes('/job')) {
       const random = Math.floor(1 + Math.random() * 1000);
@@ -23,7 +24,9 @@ function useFormSubmit(redirect: string) {
         affiliation: data.affiliation,
         job: data.job,
       });
-    } else if (path.includes('/register')) {
+    }
+
+    if (path.includes('/profile')) {
       setQRData({
         username: data.username,
         name: data.name,
@@ -31,8 +34,6 @@ function useFormSubmit(redirect: string) {
         phone: data.phone,
       });
     }
-
-    setFormData(updatedData);
 
     if (path.includes('/network')) {
       try {

@@ -9,6 +9,7 @@ export const customStyles: StylesConfig = {
     borderColor: '#333',
     outline: 'none',
     boxShadow: 'none',
+    padding: '3px',
     '&:hover': { borderColor: '#666' },
     '&:focus': { borderColor: '#666' },
   }),

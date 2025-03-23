@@ -27,7 +27,7 @@ export const useCardStore = create<CardStore>()(
     }),
     {
       name: 'card-storage',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

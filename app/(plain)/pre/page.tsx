@@ -17,7 +17,7 @@ const Page = () => {
             size={'full'}
             variant={'primary'}
             onClick={() => {
-              router.push('/pre/register');
+              router.push('/pre/register/profile');
             }}
           >
             사전등록하기

@@ -14,7 +14,7 @@ const Page = () => {
         size={'full'}
         variant={'secondary'}
         onClick={() => {
-          router.push('/onsite/register');
+          router.push('/onsite/register/profile');
         }}
       >
         현장등록하기

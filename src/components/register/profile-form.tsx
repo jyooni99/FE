@@ -1,7 +1,7 @@
 'use client';
 
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -13,7 +13,7 @@ import useFormSubmit from '~/utils/use-form-submit';
 const ProfileForm = () => {
   const methods = useForm<signUpPayload>({
     resolver: zodResolver(signUpSchema),
-    mode: 'onBlur',
+    mode: 'onTouched',
   });
 
   const { handleSubmit, setValue, watch, formState } = methods;
@@ -54,6 +54,11 @@ const ProfileForm = () => {
     if (number.length < 8) return `${number.slice(0, 3)}-${number.slice(3)}`;
     return `${number.slice(0, 3)}-${number.slice(3, 7)}-${number.slice(7)}`;
   }
+
+  useEffect(() => {
+    setUsernameCheckMessage('');
+    setIsUsernameAvailable(null);
+  }, [usernameValue]);
 
   return (
     <div className="h-full">
