@@ -51,7 +51,7 @@ const QrReader = () => {
         }
       }
     });
-  }, []);
+  });
 
   return (
     <div id="qr-code" className="h-screen">

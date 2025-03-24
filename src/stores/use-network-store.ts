@@ -20,10 +20,10 @@ export const useNetworkStore = create<UseNetworkStoreType>()(
       setIsConnect: async () => {
         set((state) => ({ isConnect: !state.isConnect })); // UI 즉시 반영
         try {
-          // const response = await api.put('/api/users/updateParticipate');
-          // if (response.status !== 200) {
-          //   set((state) => ({ isConnect: !state.isConnect })); // 실패 시 롤백
-          // }
+          const response = await api.put('/api/users/updateParticipate');
+          if (response.status !== 200) {
+            set((state) => ({ isConnect: !state.isConnect })); // 실패 시 롤백
+          }
         } catch (error) {
           console.error('네트워킹 상태 변경 오류:', error);
           set((state) => ({ isConnect: !state.isConnect })); // 오류 발생 시 롤백
@@ -38,19 +38,19 @@ export const useNetworkStore = create<UseNetworkStoreType>()(
 
             if (granted) {
               await getFcmToken();
-              // const response = await api.put('/api/users/updateNotifications');
-              // if (response.status !== 200) {
-              //   set({ isSubscribed: false }); // 실패 시 롤백
-              // }
+              const response = await api.put('/api/users/updateNotifications');
+              if (response.status !== 200) {
+                set({ isSubscribed: false }); // 실패 시 롤백
+              }
             } else {
               set({ isSubscribed: false }); // 권한 거부 시 롤백
             }
           } else {
             await deleteFcmToken();
-            // const response = await api.put('/api/users/updateNotifications');
-            // if (response.status !== 200) {
-            //   set({ isSubscribed: true }); // 실패 시 롤백
-            // }
+            const response = await api.put('/api/users/updateNotifications');
+            if (response.status !== 200) {
+              set({ isSubscribed: true }); // 실패 시 롤백
+            }
           }
         } catch (error) {
           console.error('알림 설정 오류:', error);
