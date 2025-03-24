@@ -1,5 +1,15 @@
 export async function requestPermission() {
   try {
+    if (Notification.permission === 'granted') {
+      console.log('이미 알림 권한이 허용됨');
+      return true;
+    }
+
+    if (Notification.permission === 'denied') {
+      console.log('알림 권한이 거부됨');
+      return false;
+    }
+
     const permission = await Notification.requestPermission();
 
     if (permission === 'granted') {

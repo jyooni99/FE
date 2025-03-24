@@ -7,13 +7,16 @@ import Button from './common/button';
 
 const NotificationButton = () => {
   const [isPermissionGranted, setIsPermissionGranted] = useState(false);
+  const [, setToken] = useState<string | null>(null);
 
   async function handleRequestPermission() {
     const granted = await requestPermission();
     setIsPermissionGranted(granted);
 
     if (granted) {
-      await getFcmToken();
+      const fcmToken = await getFcmToken();
+      setToken(fcmToken);
+      localStorage.setItem('FCMToken', fcmToken || '');
     }
   }
 

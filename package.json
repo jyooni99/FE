@@ -28,6 +28,7 @@
     "data-fns": "^1.1.0",
     "date-fns": "^4.1.0",
     "firebase": "^11.4.0",
+    "firebase-admin": "^13.2.0",
     "html2canvas": "^1.4.1",
     "next": "15.1.7",
     "patch-package": "^8.0.0",

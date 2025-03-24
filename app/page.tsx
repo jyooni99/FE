@@ -19,6 +19,7 @@ const Page = () => {
       >
         현장등록하기
       </Button>
+      <Button onClick={() => router.push('/test')}>테스트 페이지</Button>
     </div>
   );
 };
