@@ -3,6 +3,5 @@ node_modules
 .env*
 /build
 .DS_*
-/public/sw*
-/public/workbox-*
-.sw.js
+public/sw.js
+public/workbox-*.js
