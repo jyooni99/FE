@@ -5,6 +5,7 @@ import {
   formatFromQR,
   formatToDBUser,
 } from '~/utils/format-form-data';
+import axios from 'axios';
 
 export async function signup(data: DBFormattedType) {
   try {
@@ -57,4 +58,9 @@ export async function editProfile(data: UserType) {
   } catch (error) {
     console.error(error);
   }
+}
+
+export async function getUserDetail(userId: number | string) {
+  const res = await axios.get(`/user/${userId}`);
+  return res.data;
 }

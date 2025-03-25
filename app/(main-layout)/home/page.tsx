@@ -9,23 +9,28 @@ import OneToOneMatching from '~/components/match/one-to-one';
 import { useNetworkStore } from '~/stores/use-network-store';
 import { mockUserData } from '~/components/mypage/mock-user-data';
 import { useUserStore } from '~/stores/use-user-store';
+import { UserData } from '~/types/user.types';
 
 const Page = () => {
   const { isConnect } = useNetworkStore();
-  const { users, setUsers } = useUserStore();
-
+  const { users, setUsers, loggedInUser } = useUserStore();
+  console.log(users);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await api.get(`/api/users/all`);
-        setUsers(res.data);
+        const res = await api.get<UserData[]>('/api/users/all');
+        const filteredUsers = loggedInUser
+          ? res.data.filter((user) => user.id !== loggedInUser.id)
+          : (res.data as UserData[]);
+
+        setUsers(filteredUsers);
       } catch (error) {
         console.error('유저 목록 불러오기 실패:', error);
       }
     };
 
     fetchUsers();
-  }, [setUsers]);
+  }, [setUsers, loggedInUser]);
 
   const tabLabels = ['1:1 매칭', '그룹 매칭'];
   const tabContents = [

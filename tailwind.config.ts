@@ -182,10 +182,22 @@ export default {
           },
           to: { opacity: '1', transform: 'translate(-50%, -50%) scale(1)' },
         },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        carousel: {
+          '0%, 100%': { opacity: '0', transform: 'scale(0)' },
+          '3%': { opacity: '1', transform: 'scale(1.15)' },
+          '5%, 30%': { opacity: '1', transform: 'scale(1)' },
+          '33%': { opacity: '0', transform: 'scale(0)' },
+        },
       },
       animation: {
         overlayShow: 'overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
         contentShow: 'contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        marquee: 'marquee 15s linear infinite',
+        carousel: 'carousel 9s infinite',
       },
     },
   },

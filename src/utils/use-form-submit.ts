@@ -9,7 +9,8 @@ import { signup, login } from '~/utils/api/user';
 function useFormSubmit(redirect: string) {
   const router = useRouter();
   const path = usePathname();
-  const { setFormData, setQRData, formData, clearFormData } = useFormStore();
+  const { setFormData, setQRData, formData, clearFormData, fetchMyQRData } =
+    useFormStore();
 
   const entry = path.split('/')[1];
 
@@ -45,6 +46,7 @@ function useFormSubmit(redirect: string) {
           router.push('/pre');
         } else {
           await login(formattedData.username, formattedData.password);
+          await fetchMyQRData();
           router.push('/welcome');
         }
         return;

@@ -7,6 +7,8 @@ import MatchGroup from './match-group';
 import DefaultProfile from '../common/default-profile';
 import { useGroupMatchStore } from '~/stores/use-group-match-store';
 import Image from 'next/image';
+import { useMatchModalStore } from '~/stores/use-match-modal-store';
+
 interface MatchCardProps {
   userData: UserData;
   inMyPage?: boolean;
@@ -21,6 +23,7 @@ interface MatchCardProps {
     interest: string[];
     purpose: string[];
   };
+  onClick?: () => void;
 }
 
 const MatchCard = ({
@@ -30,6 +33,7 @@ const MatchCard = ({
   groupId,
 }: MatchCardProps) => {
   const { groups, addMemberToGroup } = useGroupMatchStore();
+  const { requestedUserIds } = useMatchModalStore();
 
   const handleJoinGroup = () => {
     console.log('추가..');
@@ -50,7 +54,7 @@ const MatchCard = ({
     'right-16 z-40',
   ];
   return (
-    <Card className="w-[335px] border-none rounded-2xl pt-5">
+    <Card className="w-[335px] border-none rounded-2xl pt-5 mb-3">
       {isGroup && (
         <CardHeader
           className="flex justify-between items-center mb-2 -mt-2"
@@ -77,7 +81,7 @@ const MatchCard = ({
           </div>
         </CardHeader>
       )}
-      <CardBody className="flex flex-col pt-[var(--size-spacing-20)] px-[var(--size-spacing-12)] pb-[var(--size-spacing-12)]">
+      <CardBody className="flex flex-col pt-[var(--size-spacing-20)] px-[var(--size-spacing-12)]">
         {isGroup ? (
           // <MatchGroup groupData={groupData!} /> // ⬅ `inMyPage`를 직접 전달
           <MatchGroup
@@ -89,7 +93,13 @@ const MatchCard = ({
             }}
           />
         ) : (
-          <MatchOneToOne userData={userData} requestedNetwork={false} /> // ⬅ `inMyPage`를 직접 전달
+          <MatchOneToOne
+            userData={userData}
+            requestedNetwork={
+              typeof userData.id === 'number' &&
+              requestedUserIds.includes(userData.id)
+            }
+          /> // ⬅ `inMyPage`를 직접 전달
         )}
       </CardBody>
     </Card>

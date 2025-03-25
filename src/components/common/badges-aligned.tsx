@@ -5,6 +5,8 @@ interface BadgesAlignedProps {
   className?: string;
   noneChip?: boolean;
   userInfoColor?: boolean;
+  isInterested?: boolean;
+  textSize?: string;
 }
 
 const BadgesAligned = ({
@@ -13,13 +15,15 @@ const BadgesAligned = ({
   className,
   noneChip,
   userInfoColor,
+  isInterested,
+  textSize,
 }: BadgesAlignedProps) => {
-  const isInterestSection = title === '관심사';
-
+  const isInterestSection = title === '관심사' || isInterested === true;
+  const safeItems = Array.isArray(items) ? items : [items];
   return (
     <div
-      className={`gap-3 flex flex-col bg-gray-neutral-800 ${
-        !userInfoColor && 'pb-0.5'
+      className={`gap-3 flex flex-col ${
+        !userInfoColor && 'pb-0.5 bg-gray-neutral-800'
       } rounded-xl ${className}`}
     >
       {title && (
@@ -37,7 +41,7 @@ const BadgesAligned = ({
             <p
               key={idx}
               className={`w-fit ${
-                userInfoColor && noneChip ? 'p-0' : 'px-2 bg-gray-neutral-800'
+                userInfoColor && noneChip ? 'p-0' : 'p-2 bg-gray-neutral-800'
               } text-body-sm rounded-sm text-white ${
                 noneChip
                   ? 'bg-transparent text-orange-500 py-1'
@@ -66,11 +70,11 @@ const BadgesAligned = ({
               userInfoColor && noneChip ? 'p-0' : 'px-2 bg-gray-neutral-800'
             } text-body-sm rounded-sm text-white ${
               noneChip
-                ? 'bg-transparent text-orange-500 py-1'
+                ? 'bg-transparent !text-orange-500 py-1'
                 : 'bg-gray-neutral-600'
-            }`}
+            } ${textSize ? { textSize } : ''}`}
           >
-            {items.join(', ')}
+            {safeItems.join(', ')}
           </p>
         )}
       </div>

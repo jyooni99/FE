@@ -9,9 +9,12 @@ import Input from '~/components/common/input';
 import Button from '~/components/common/button';
 import { loginPayload, loginSchema } from '~/schema/user';
 import { login } from '~/utils/api/user';
+import { useFormStore } from '~/stores/use-form-store';
+// import { useUserStore } from '~/stores/use-user-store';
 
 const LoginForm = () => {
   const router = useRouter();
+  const { fetchMyQRData } = useFormStore();
   const methods = useForm<loginPayload>({
     resolver: zodResolver(loginSchema),
     mode: 'onSubmit',
@@ -20,6 +23,10 @@ const LoginForm = () => {
   const onSubmit = methods.handleSubmit(async (data) => {
     try {
       await login(data.username, data.password);
+
+      // const { setLoggedInUser } = useUserStore.getState();
+      // setLoggedInUser(user);
+      await fetchMyQRData();
       router.push('/welcome');
     } catch (error: unknown) {
       if (error instanceof Error) {

@@ -42,7 +42,7 @@ const ChatBubble = ({
   className,
   message,
   createTime,
-  senderName,
+  // senderName,
   showProfile = false,
   imgSrc,
   ...props
@@ -61,13 +61,17 @@ const ChatBubble = ({
         className={cn(chatBubbleVariants({ variant, size }), className)}
         {...props}
       >
-            <div className="message-content">{message}</div> {/* content를 메시지로 표시 */}
-            <div className="message-time"> {new Date(createTime).toLocaleTimeString("ko-KR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  })}</div> {/* timestamp로 시간 표시 */}
-
+        <div className="message-content">{message}</div>{' '}
+        {/* content를 메시지로 표시 */}
+        <div className="message-time">
+          {' '}
+          {new Date(createTime).toLocaleTimeString('ko-KR', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+          })}
+        </div>{' '}
+        {/* timestamp로 시간 표시 */}
       </div>
     </div>
   );

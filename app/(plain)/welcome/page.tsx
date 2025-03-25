@@ -16,7 +16,7 @@ const Page = () => {
       <Button
         size={'full'}
         onClick={() => {
-          router.push('/home');
+          router.push('/quick-network');
         }}
       >
         네트워킹존 입장하기

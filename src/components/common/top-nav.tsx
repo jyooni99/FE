@@ -111,7 +111,7 @@ const TopNavigation = () => {
         )}
 
         {type === 'back-arrow' && (
-          <>
+          <div className="flex justify-between items-center w-full">
             <div className="flex gap-2">
               <button onClick={() => router.back()}>
                 <Image
@@ -121,9 +121,11 @@ const TopNavigation = () => {
                   height={24}
                 />
               </button>
-              <p className="text-lg font-semibold text-white">{title}</p>
+              {title && (
+                <p className="text-lg font-semibold text-white">{title}</p>
+              )}
             </div>
-          </>
+          </div>
         )}
       </div>
 

@@ -1,26 +1,14 @@
-const API_URL = `http://${process.env.NEXT_PUBLIC_API_URL}/chats/private-chatroom/request`;
+import api from './api/api';
 
-export const sendChatRequestAPI = async (
-  requesterId: number,
-  receiverId: number,
-) => {
+// const API_URL = `http://${process.env.NEXT_PUBLIC_API_URL}/chats/private-chatroom/request`;
+
+export const sendChatRequestAPI = async (receiverId: number) => {
   try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        requesterId: requesterId.toString(),
+    await api.get('/api/chats/private-chatroom/request', {
+      params: {
         receiverId: receiverId.toString(),
-      }),
+      },
     });
-
-    if (!response.ok) {
-      const errorMessage = await response.text();
-      console.error('Response Error:', errorMessage);
-      throw new Error('채팅 요청 실패');
-    }
 
     alert('✅ 채팅 요청이 전송되었습니다!');
   } catch (error) {
