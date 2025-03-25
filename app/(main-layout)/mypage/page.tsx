@@ -7,8 +7,8 @@ import CardDialog from '~/components/mypage/card-dialog';
 import { useFormStore } from '~/stores/use-form-store';
 
 const Page = () => {
-  const { qrData } = useFormStore();
   const [showCard, setShowCard] = useState(false);
+  const { qrData } = useFormStore();
 
   return (
     <div className="flex flex-col p-5 gap-4">
@@ -21,7 +21,7 @@ const Page = () => {
             내 정보 수정
           </p>
           <Image
-            src="/assets/svgs/Arrow.svg"
+            src="/assets/svgs/arrow.svg"
             width={24}
             height={24}
             alt="arrow"
@@ -35,14 +35,14 @@ const Page = () => {
             내 명함 보기
           </p>
           <Image
-            src="/assets/svgs/Arrow.svg"
+            src="/assets/svgs/arrow.svg"
             width={24}
             height={24}
             alt="arrow"
           />
         </button>
         <CardDialog
-          open={!!showCard}
+          open={showCard}
           onClose={() => setShowCard((prev) => !prev)}
           user={qrData}
         />
@@ -54,7 +54,7 @@ const Page = () => {
             저장한 명함 목록
           </p>
           <Image
-            src="/assets/svgs/Arrow.svg"
+            src="/assets/svgs/arrow.svg"
             width={24}
             height={24}
             alt="arrow"

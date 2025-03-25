@@ -1,6 +1,7 @@
 import '~/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import FetchMyQR from '~/hooks/use-fetch-my-qr';
 
 const APP_NAME = 'Quick Network';
 const APP_DEFAULT_TITLE = 'Quick Network';
@@ -56,6 +57,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="w-screen bg-bg-color">
         <div className="min-h-screen w-full max-w-3xl mx-auto bg-bg-color">
+          <FetchMyQR />
           {children}
           <Script src="/service-worker.js" />
         </div>

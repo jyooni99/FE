@@ -56,7 +56,7 @@ export const signUpSchema = z.object({
   username: usernameSchema,
   email: emailSchema,
   password: passwordSchema,
-  phone: phoneSchema,
+  contactInfo: phoneSchema,
 });
 
 export const findIdSchema = z.object({
@@ -72,7 +72,7 @@ export const findPasswordSchema = z.object({
 export const updateProfileSchema = z.object({
   name: nameSchema, // 이름 유효성 검사 (한글/영어)
   email: emailSchema, // 이메일 유효성 검사
-  phone: phoneSchema, // 전화번호 유효성 검사
+  contactInfo: phoneSchema, // 전화번호 유효성 검사
 });
 
 //payload

@@ -15,13 +15,13 @@ const Page = () => {
     job: string[];
     interest: string[];
     career: string[];
-    purpose: string[];
+    participationPurpose: string[];
   }>({
     defaultValues: {
       job: ['상관없음'],
       interest: ['상관없음'],
       career: [],
-      purpose: ['상관없음'],
+      participationPurpose: ['상관없음'],
     },
   });
 
@@ -68,7 +68,7 @@ const Page = () => {
           />
           <ToggleField
             label="참여목적"
-            name="purpose"
+            name="participationPurpose"
             control={control}
             options={purposeOptions}
           />

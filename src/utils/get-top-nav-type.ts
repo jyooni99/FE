@@ -5,6 +5,7 @@ const routes = [
   { path: '/notifications', type: 'default', title: '알림' },
   { path: '/mypage', type: 'default', title: '마이페이지' },
   { path: '/mypage/edit-profile', type: 'back-arrow', title: '내 정보 수정' },
+  { path: '/qr-reader', type: 'back-arrow', title: '' },
   {
     path: '/mypage/name-card-list',
     type: 'back-arrow',

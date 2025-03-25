@@ -31,6 +31,8 @@ interface ChatBubbleProps
     VariantProps<typeof chatBubbleVariants> {
   message: string;
   showProfile?: boolean;
+  createTime: string;
+  senderName: string;
   imgSrc?: string;
 }
 
@@ -39,6 +41,8 @@ const ChatBubble = ({
   size,
   className,
   message,
+  createTime,
+  senderName,
   showProfile = false,
   imgSrc,
   ...props
@@ -57,7 +61,13 @@ const ChatBubble = ({
         className={cn(chatBubbleVariants({ variant, size }), className)}
         {...props}
       >
-        {message}
+            <div className="message-content">{message}</div> {/* content를 메시지로 표시 */}
+            <div className="message-time"> {new Date(createTime).toLocaleTimeString("ko-KR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</div> {/* timestamp로 시간 표시 */}
+
       </div>
     </div>
   );

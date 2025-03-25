@@ -50,7 +50,7 @@ const MessageInput = ({ onSendMessage }: MessageInputProps) => {
             name="message"
             placeholder="메시지를 입력하세요..."
             inputSize="full"
-            className="w-full bg-[#2C2C2C] text-[#909090] focus:ring-0 focus:outline-none border-none rounded-full text-white px-4 py-2"
+            className="w-full bg-[#2C2C2C] text-[#909090] focus:ring-0 focus:outline-none border-none rounded-full px-4 py-2"
           />
         </div>
 

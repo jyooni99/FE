@@ -68,8 +68,8 @@ const MatchCard = ({
             ))}
             <div className="h-[24px] w-[24px] bg-gray-neutral-800 text-gray-neutral-700 rounded-full flex items-center justify-center text-center m-auto outline outline-[1px] outline-gray-neutral-800">
               <Image
-                src="/assets/svgs/Plus.svg"
-                alt="BackArrow Icon"
+                src="/assets/svgs/plus.svg"
+                alt="plus icon"
                 width={24}
                 height={24}
               />

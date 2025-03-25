@@ -5,9 +5,9 @@ import TableApplicationCard from './table-application-card';
 
 interface Message {
   id: number;
-  senderId: string;
-  content: string;
-  timestamp: string;
+  senderName: string;
+  message: string;
+  createTime: string;
 }
 
 interface Notification {
@@ -105,24 +105,16 @@ const ChatWindow = ({
 
         {/* 채팅 메시지 영역 */}
         <div className="p-4 ">
-          {status === 'accepted' ? (
-            messages.map((message) => (
+          {
+             messages.map((message) => (
               <ChatBubble
-                key={message.id}
-                variant={message.senderId === 'other' ? 'receiver' : 'sender'}
-                message={message.content}
-                showProfile={message.senderId === 'other'}
-                imgSrc={receiverProfileImg}
-              />
-            ))
-          ) : (
-            <ChatBubble
-              message="안녕하세요~"
-              variant="receiver"
-              showProfile={true}
-              imgSrc={receiverProfileImg}
+              key={message.createTime}
+              message={message.message} // 메시지 내용
+              createTime={message.createTime}
+              senderName={message.senderName}
             />
-          )}
+            ))
+          }
         </div>
       </div>
     </div>

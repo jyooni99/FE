@@ -57,7 +57,7 @@ const AccordionTrigger = ({
     >
       {children}
       <Image
-        src="/assets/Arrow.svg"
+        src="/assets/arrow.svg"
         alt="Arrow Icon"
         width={12}
         height={12}

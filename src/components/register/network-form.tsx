@@ -37,7 +37,7 @@ const NetworkForm = () => {
         >
           <div className="flex flex-1 flex-col overflow-y-auto gap-5">
             <Controller
-              name="purpose"
+              name="participationPurpose"
               control={control}
               rules={{ required: '네트워킹 참여 목적을 선택해주세요.' }}
               render={({ field, fieldState }) => (
@@ -47,7 +47,7 @@ const NetworkForm = () => {
                   </p>
                   <Select
                     {...field}
-                    instanceId="purpose"
+                    instanceId="participationPurpose"
                     placeholder="네트워킹 참여 목적"
                     getOptionLabel={(e) => e.value}
                     options={purposeOptions}

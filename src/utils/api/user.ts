@@ -1,6 +1,10 @@
-import { DBFormattedType, MypageEditProfileType } from '~/types/form';
 import api from './api';
-import { formatToDB, formatToMyPageForm } from '../format-form-data';
+import { DBFormattedType, UserType } from '~/types/form';
+import {
+  formatFromDBUser,
+  formatFromQR,
+  formatToDBUser,
+} from '~/utils/format-form-data';
 
 export async function signup(data: DBFormattedType) {
   try {
@@ -28,20 +32,28 @@ export async function viewAllUser() {
   }
 }
 
-export async function fetchMyPage() {
+export async function fetchProfile() {
   try {
     const res = await api.get('/api/users/mypage', undefined);
-    return formatToMyPageForm(res.data);
+    return formatFromDBUser(res.data);
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function editProfile(data: MypageEditProfileType, userId: number) {
+export async function fetchMyCard() {
   try {
-    const formatted = formatToDB(data);
-    const res = await api.put(`/api/user/${userId}`, formatted);
-    console.log(res);
+    const res = await api.get('/api/users/mypage', undefined);
+    return formatFromQR(res.data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function editProfile(data: UserType) {
+  try {
+    const formatted = formatToDBUser(data);
+    await api.patch('/api/users', formatted);
   } catch (error) {
     console.error(error);
   }

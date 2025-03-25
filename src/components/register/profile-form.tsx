@@ -9,6 +9,7 @@ import Input from '~/components/common/input';
 import Button from '~/components/common/button';
 import { signUpPayload, signUpSchema } from '~/schema/user';
 import useFormSubmit from '~/utils/use-form-submit';
+import { phoneFormatter } from '~/utils/phone-formatter';
 
 const ProfileForm = () => {
   const methods = useForm<signUpPayload>({
@@ -45,14 +46,6 @@ const ProfileForm = () => {
       setUsernameCheckMessage('오류가 발생했습니다. 다시 시도해주세요.');
       setIsUsernameAvailable(false);
     }
-  }
-
-  function phoneFormatter(value: string) {
-    const number = value.replace(/\D/g, '');
-
-    if (number.length < 4) return number;
-    if (number.length < 8) return `${number.slice(0, 3)}-${number.slice(3)}`;
-    return `${number.slice(0, 3)}-${number.slice(3, 7)}-${number.slice(7)}`;
   }
 
   useEffect(() => {
@@ -98,12 +91,12 @@ const ProfileForm = () => {
             />
             <Input name="email" placeholder="이메일" label="이메일" />
             <Input
-              name="phone"
+              name="contactInfo"
               placeholder="휴대폰 번호"
               label="휴대폰 번호"
               maxLength={13}
               onChange={(e) =>
-                setValue('phone', phoneFormatter(e.target.value))
+                setValue('contactInfo', phoneFormatter(e.target.value))
               }
             />
           </div>

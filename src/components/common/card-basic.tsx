@@ -11,7 +11,7 @@ const CardBasic = ({ userId }: CardBasicProps) => {
       <p className="text-body-lg">{userId}</p>
       <Image
         src="/assets/svgs/arrow.svg"
-        alt="BackArrow Icon"
+        alt="arrow icon"
         width={24}
         height={24}
       />

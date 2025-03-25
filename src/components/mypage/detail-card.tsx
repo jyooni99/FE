@@ -42,7 +42,7 @@ const FrontCard = ({ user }: { user: QRCodeType | null }) => (
         <InfoRow label="직무/직책" value={user?.job.value} />
         <InfoRow label="소속" value={user?.affiliation} />
         <InfoRow label="이메일" value={user?.email} />
-        <InfoRow label="휴대폰 번호" value={user?.phone} />
+        <InfoRow label="휴대폰 번호" value={user?.contactInfo} />
       </div>
     </div>
   </div>

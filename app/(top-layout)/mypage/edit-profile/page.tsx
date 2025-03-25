@@ -1,7 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import isEqual from 'lodash.isequal';
 
 import { careerOptions, groupedJobOptions } from '~/constants/job-options';
 import { purposeOptions } from '~/constants/purpose';
@@ -11,38 +13,41 @@ import ToggleField from '~/components/register/toggle-field';
 import Input from '~/components/common/input';
 import Button from '~/components/common/button';
 import SelectField from '~/components/common/select-field';
-import { MypageEditProfileType } from '~/types/form';
-import { fetchMyPage } from '~/utils/api/user';
+import { UserType } from '~/types/form';
+import { editProfile, fetchProfile } from '~/utils/api/user';
+import { phoneFormatter } from '~/utils/phone-formatter';
 
 const Page = () => {
-  const methods = useForm<MypageEditProfileType>({
-    defaultValues: {
-      job: { category: '', value: '' },
-      career: { value: '' },
-      purpose: { value: '' },
-      interest: [],
-      affiliation: '',
-      phone: '',
-      email: '',
-    },
-  });
+  const router = useRouter();
+  const methods = useForm<UserType>();
+  const { watch, handleSubmit, setValue } = methods;
+
+  const currentData = watch(); // 현재 데이터
+  const [originData, setOriginData] = useState<UserType | null>(null); // 원본 데이터
+  const isUnChanged = originData !== null && isEqual(originData, currentData); // 폼 값이 바뀌었는지 체크
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchMyPage();
+      const data = await fetchProfile();
 
       if (data) {
+        setOriginData(data);
         methods.reset(data);
       }
     };
-
     fetchData();
-  });
+  }, []);
 
   return (
     <FormProvider {...methods}>
       <div className="w-full p-5">
-        <form>
+        <form
+          onSubmit={handleSubmit(() => {
+            editProfile(currentData);
+            setOriginData(currentData);
+            alert('정보 수정이 완료되었습니다.');
+          })}
+        >
           <div className="flex flex-col w-full gap-7">
             {/* 프로필 정보 */}
             <div className="flex flex-col gap-2">
@@ -70,10 +75,10 @@ const Page = () => {
               />
 
               <SelectField
-                name="purpose"
+                name="participationPurpose"
                 label="네트워킹 참여 목적"
                 options={purposeOptions}
-                instanceId="purpose"
+                instanceId="participationPurpose"
               />
 
               <div className="flex flex-col gap-1.5">
@@ -82,13 +87,12 @@ const Page = () => {
                 </p>
                 <div className="flex flex-wrap gap-2 px-5 py-4 rounded-lg bg-gray-neutral-800">
                   <ToggleField
-                    name="interest"
+                    name="interests"
                     control={methods.control}
                     options={interestOptions}
                     minSelection={1}
                     maxSelection={30}
-                    toggleVariants="black"
-                    className="mb-0"
+                    toggleVariants="primary-small"
                   />
                 </div>
               </div>
@@ -106,17 +110,33 @@ const Page = () => {
               </p>
             </div>
             <div className="flex flex-col gap-4">
-              <Input name="phone" label="휴대폰 번호" />
+              <Input
+                name="contactInfo"
+                label="휴대폰 번호"
+                onChange={(e) =>
+                  setValue('contactInfo', phoneFormatter(e.target.value))
+                }
+              />
               <Input name="email" label="이메일" />
             </div>
           </div>
 
           {/* 버튼 */}
           <div className="flex gap-2 pt-8">
-            <Button type="button" variant="black/50">
+            <Button
+              type="button"
+              className="h-[50px]"
+              variant={'black-transparent'}
+              onClick={() => router.back()}
+            >
               취소
             </Button>
-            <Button type="submit" variant={'primary'}>
+            <Button
+              type="submit"
+              className="h-[50px]"
+              variant={'green'}
+              disabled={isUnChanged}
+            >
               변경 사항 저장
             </Button>
           </div>
