@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import ChatWindow from '~/components/chat/chat-window';
 import MessageInput from '~/components/chat/message-input';
+import { useSearchParams } from 'next/navigation';
 
 interface Chat {
   id: number;
@@ -34,7 +35,19 @@ const ChatPage = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [websocket, setWebSocket] = useState<WebSocket | null>(null);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const roomId = searchParams.get('roomId');
   console.log(setSelectedChat);
+
+  const [savedNickName, setSavedNickName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const nickName = localStorage.getItem('nickName');
+      setSavedNickName(nickName);
+      console.log('닉네임은:' + nickName); // 상태 변경 전에 localStorage에서 가져온 값 확인
+    }
+  }, []);
   const fetchToken = () => {
     // 쿠키에서 access_token 가져오기
     const cookies = document.cookie.split(';');
@@ -55,7 +68,7 @@ const ChatPage = () => {
     const access_token = localStorage.getItem('accessToken');
 
     const ws = new WebSocket(
-      `ws://${process.env.NEXT_PUBLIC_WS_API_URL}/chats?chatRoomId=1&access_token=${access_token}`,
+      `ws://${process.env.NEXT_PUBLIC_WS_API_URL}/chats?chatRoomId=${roomId}&access_token=${access_token}`,
     );
     setWebSocket(ws);
 
@@ -105,9 +118,9 @@ const ChatPage = () => {
     // 메시지 객체를 서버에서 기대하는 형태에 맞게 수정
     const messageObject = {
       createTime: new Date().toISOString(), // LocalDateTime은 ISO 8601 형식의 문자열로 전달
-      chatRoomId: 1, // 채팅방 ID
+      chatRoomId: roomId, // 채팅방 ID
       message: message, // 메시지 내용
-      senderName: 'kim', // senderId -> senderName으로 수정
+      senderName: savedNickName, // senderId -> senderName으로 수정
     };
 
     // 서버로 메시지 전송

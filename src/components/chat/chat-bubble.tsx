@@ -1,6 +1,8 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '~/utils/cn';
 import DefaultProfile from '~/components/common/default-profile';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const chatBubbleVariants = cva(
   'break-words whitespace-normal relative max-w-[220px] w-fit min-h-[43px]',
@@ -35,34 +37,45 @@ interface ChatBubbleProps
   senderName: string;
   imgSrc?: string;
 }
-
 const ChatBubble = ({
   variant,
   size,
   className,
   message,
   createTime,
-  // senderName,
+  senderName,
   showProfile = false,
   imgSrc,
   ...props
 }: ChatBubbleProps) => {
+  const [savedNickName, setSavedNickName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const nickName = localStorage.getItem('nickName');
+      setSavedNickName(nickName);
+      console.log(senderName);
+
+      // 상태 변경 전에 localStorage에서 가져온 값 확인
+    }
+  }, []);
+  useEffect(() => {
+    console.log(senderName === savedNickName);
+  }, [savedNickName]);
+  console.log('sd:' + savedNickName);
   return (
     <div
       className={cn(
         'mb-2 flex gap-2 items-start',
-        variant === 'sender' ? 'justify-end' : 'justify-start',
+
+        senderName === savedNickName ? 'justify-end' : 'justify-start',
       )}
     >
       {variant === 'receiver' && showProfile && imgSrc && (
         <DefaultProfile size="xs" />
       )}
-      <div
-        className={cn(chatBubbleVariants({ variant, size }), className)}
-        {...props}
-      >
+      <div>
         <div className="message-content">{message}</div>{' '}
-        {/* content를 메시지로 표시 */}
         <div className="message-time">
           {' '}
           {new Date(createTime).toLocaleTimeString('ko-KR', {
@@ -71,7 +84,6 @@ const ChatBubble = ({
             hour12: true,
           })}
         </div>{' '}
-        {/* timestamp로 시간 표시 */}
       </div>
     </div>
   );

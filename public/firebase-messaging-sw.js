@@ -6,13 +6,13 @@ importScripts(
 );
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBGKLvKKLj-XSWBbUUSkwepDfFzv--Ws6Q',
-  authDomain: 'quick-network-6cdb3.firebaseapp.com',
-  projectId: 'quick-network-6cdb3',
-  storageBucket: 'quick-network-6cdb3.firebasestorage.app',
-  messagingSenderId: '1425957634',
-  appId: '1:1425957634:web:e68c34c2c9712f8746181b',
-  measurementId: 'G-9NT589E02Z',
+  apiKey: 'AIzaSyAG5Dy_cMVsKyp9mrF6X8mWYa5xM_16IzI',
+  authDomain: 'uratchacha-9c430.firebaseapp.com',
+  projectId: 'uratchacha-9c430',
+  storageBucket: 'uratchacha-9c430.firebasestorage.app',
+  messagingSenderId: '975825146714',
+  appId: '1:975825146714:web:e338b5e9ae8e67264f1963',
+  measurementId: 'G-FM9MG74NEC',
 };
 
 firebase.initializeApp(firebaseConfig);
