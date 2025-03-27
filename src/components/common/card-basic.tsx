@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Arrow from '~/assets/svgs/arrow.svg';
 import React from 'react';
 
 interface CardBasicProps {
@@ -9,12 +9,7 @@ const CardBasic = ({ userId }: CardBasicProps) => {
   return (
     <div className="flex items-center justify-start">
       <p className="text-body-lg">{userId}</p>
-      <Image
-        src="/assets/svgs/arrow.svg"
-        alt="arrow icon"
-        width={24}
-        height={24}
-      />
+      <Arrow width={24} height={24} />
     </div>
   );
 };

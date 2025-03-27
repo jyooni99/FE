@@ -1,6 +1,4 @@
 'use client';
-
-import Image from 'next/image';
 import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -9,6 +7,10 @@ import Modal, { ModalProps } from '~/components/common/modal';
 import { useNetworkStore } from '~/stores/use-network-store';
 import { getTopNavType } from '~/utils/get-top-nav-type';
 import { ButtonVariantProps } from '~/components/common/button';
+
+import Exit from '~/assets/svgs/exit-icon.svg';
+import BackArrow from '~/assets/svgs/back-arrow.svg';
+import Card from '~/assets/svgs/card.svg';
 
 const TopNavigation = () => {
   const pathname = usePathname();
@@ -57,20 +59,13 @@ const TopNavigation = () => {
         {type === 'quick-network' && (
           <>
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 border border-dashed border-[#02e473]" />
               <p className="text-lg font-semibold text-white">퀵네트워크</p>
               <ToggleSwitch toggle={isConnect} setToggle={setIsConnect} />
             </div>
             <div className="flex items-center gap-2">
               <button onClick={() => router.push('/qr-reader')}>
-                <Image
-                  src="/assets/svgs/qr-code.svg"
-                  alt="qr code"
-                  width={32}
-                  height={32}
-                />
+                <Card width={32} height={32} />
               </button>
-              <div className="w-6 h-6 border border-dashed border-[#02e473]" />
             </div>
           </>
         )}
@@ -79,10 +74,6 @@ const TopNavigation = () => {
           <>
             <div className="flex gap-2">
               <p className="text-lg font-semibold text-white">{title}</p>
-            </div>
-            <div className="flex gap-4">
-              <div className="w-6 h-6 border border-dashed border-[#02e473]" />
-              <div className="w-6 h-6 border border-dashed border-[#02e473]" />
             </div>
           </>
         )}
@@ -94,19 +85,9 @@ const TopNavigation = () => {
               onClick={handleExitChatRoom}
             >
               <p className="text-lg font-semibold text-white">채팅방</p>
-              <Image
-                src="/assets/svgs/exit-icon.svg"
-                alt="Exit Icon"
-                width={24}
-                height={24}
-              />
+              <Exit width={24} height={24} />
             </button>
-            <Image
-              src="/assets/svgs/scanner.svg"
-              alt="Scanner Icon"
-              width={24}
-              height={24}
-            />
+            <Card width={32} height={32} />
           </>
         )}
 
@@ -114,12 +95,7 @@ const TopNavigation = () => {
           <div className="flex justify-between items-center w-full">
             <div className="flex gap-2">
               <button onClick={() => router.back()}>
-                <Image
-                  src="/assets/svgs/back-arrow.svg"
-                  alt="뒤로가기"
-                  width={24}
-                  height={24}
-                />
+                <BackArrow width={24} height={24} />
               </button>
               {title && (
                 <p className="text-lg font-semibold text-white">{title}</p>

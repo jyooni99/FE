@@ -38,7 +38,10 @@ export const useNetworkStore = create<UseNetworkStoreType>()(
 
             if (granted) {
               await getFcmToken();
-              const response = await api.put('/api/users/updateNotifications');
+              const response = await api.put('/api/users/updateParticipate');
+              if (response.status !== 200) {
+                set((state) => ({ isConnect: !state.isConnect })); // 실패 시 롤백
+              }
               if (response.status !== 200) {
                 set({ isSubscribed: false }); // 실패 시 롤백
               }
@@ -47,7 +50,10 @@ export const useNetworkStore = create<UseNetworkStoreType>()(
             }
           } else {
             await deleteFcmToken();
-            const response = await api.put('/api/users/updateNotifications');
+            const response = await api.put('/api/users/updateParticipate');
+            if (response.status !== 200) {
+              set((state) => ({ isConnect: !state.isConnect })); // 실패 시 롤백
+            }
             if (response.status !== 200) {
               set({ isSubscribed: true }); // 실패 시 롤백
             }

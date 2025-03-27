@@ -22,7 +22,13 @@ const LoginForm = () => {
 
   const onSubmit = methods.handleSubmit(async (data) => {
     try {
-      await login(data.username, data.password);
+      const response = await login(data.username, data.password);
+
+      console.log(response);
+
+      const { accessToken, refreshToken } = response;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
 
       // const { setLoggedInUser } = useUserStore.getState();
       // setLoggedInUser(user);

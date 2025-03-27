@@ -1,10 +1,11 @@
 // user.types.ts
 export interface UserData {
-  id?: number | undefined;
+  id?: number;
+  job?: string[];
   username?: string;
   password?: string;
   affiliation?: string;
-  career?: string;
+  career?: number[];
   contactInfo?: string;
   email?: string;
   interestJobCategory?: string;
@@ -12,6 +13,6 @@ export interface UserData {
   jobCategory?: string;
   jobValue?: string;
   interests?: string[];
-  participationPurpose?: string[];
+  participationPurpose: string[];
   nickName?: string;
 }

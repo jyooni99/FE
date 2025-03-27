@@ -1,43 +1,37 @@
-import React from 'react';
-import Image from 'next/image';
 // import  { GroupData } from '~/types/'
-
-interface GroupData {
-  job: string[];
-  career: string[];
-  interest: string[];
-  purpose: string[];
-}
+import React from 'react';
 
 interface MatchGroupProps {
-  groupData: GroupData;
+  groupData: {
+    job: string[];
+    career: number[];
+    interest: string[];
+    purpose: string[];
+  };
 }
 
 const MatchGroup = ({ groupData }: MatchGroupProps) => {
-  if (!groupData) {
-    return <div className="text-gray-400">그룹 데이터가 없습니다.</div>;
-  }
+  const careerLabels = ['학생', '신입', '주니어', '미드레벨', '시니어'];
 
   const infoList = [
     {
       title: '직무',
-      src: '/assets/svgs/exit-icon.svg',
-      text: groupData.job[0] || '선택 안함',
+      text: groupData.job.join(', ') || '상관없음',
     },
     {
       title: '경력',
-      src: '/assets/svgs/exit-icon.svg',
-      text: groupData.career[0] || '선택 안함',
+      text: groupData.career
+        .filter((num) => num >= 1 && num <= 4) // 1~4 범위만 표시
+        .map((num) => careerLabels[num] || '알 수 없음')
+        .join(' ~ '),
     },
     {
       title: '관심분야',
-      src: '/assets/svgs/exit-icon.svg',
-      text: groupData.interest[0] || '선택 안함',
+      text: groupData.interest.join(', ') || '상관없음',
     },
     {
       title: '참여목적',
-      src: '/assets/svgs/exit-icon.svg',
-      text: groupData.purpose[0] || '선택 안함',
+      text: groupData.purpose.join(', ') || '상관없음',
     },
   ];
   return (
@@ -45,12 +39,6 @@ const MatchGroup = ({ groupData }: MatchGroupProps) => {
       {infoList.map((info, index) => (
         <div key={index} className="mb-3 flex justify-between">
           <div className="flex items-center gap-2">
-            <Image
-              src={info.src} // 나중에 아이콘 확정되면...
-              alt="Exit Icon"
-              width={14}
-              height={14}
-            />
             <span className="text-white font-semibold text-body-sm">
               {info.title}
             </span>
@@ -63,13 +51,3 @@ const MatchGroup = ({ groupData }: MatchGroupProps) => {
 };
 
 export default MatchGroup;
-
-// 단일인데 배열ㅇ이 들어가는 것으로 ..
-/*
-{
-  job: [],
-  career: [],
-  interest: [],
-  purpose: []
-  }
-*/

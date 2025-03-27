@@ -1,27 +1,141 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import api from '~/utils/api/api';
 
 import RadixTabs from '~/components/common/radix-tabs';
 import GroupMatching from '~/components/match/group';
 import OneToOneMatching from '~/components/match/one-to-one';
 import { useNetworkStore } from '~/stores/use-network-store';
-import { mockUserData } from '~/components/mypage/mock-user-data';
 import { useUserStore } from '~/stores/use-user-store';
 import { UserData } from '~/types/user.types';
+// import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const { isConnect } = useNetworkStore();
-  const { users, setUsers, loggedInUser } = useUserStore();
+  const { users, setUsers } = useUserStore();
+  const [loggedInUser, setLoggedInUser] = useState<UserData | null>(null);
+  const [, setWebSocket] = useState<WebSocket | null>(null);
+  // const router = useRouter();
+
   console.log(users);
+  console.log(loggedInUser);
+
+  // 채팅 요청 알림 UI 표시
+  function showChatRequestNotification(
+    message: string,
+    requesterId: number,
+    receiverId: number,
+  ) {
+    const notificationElement = document.createElement('div');
+    notificationElement.innerHTML = `
+      <p>${message}</p>
+      <button id="acceptButton">수락</button>
+      <button id="rejectButton">거절</button>
+    `;
+    document.body.appendChild(notificationElement); // 메시지를 UI에 추가
+    console.log('요청자' + requesterId);
+    console.log('받는 사람' + receiverId);
+
+    // 수락 버튼 클릭 시 acceptChat 호출
+    const acceptButton = notificationElement.querySelector('#acceptButton')!;
+    acceptButton.addEventListener('click', () =>
+      acceptChat(requesterId, receiverId),
+    );
+
+    // 거절 버튼 클릭 시 rejectChat 호출
+    const rejectButton = notificationElement.querySelector('#rejectButton')!;
+    rejectButton.addEventListener('click', () => rejectChat(requesterId));
+  }
+
+  // 채팅 방 수락 함수
+  function acceptChat(requesterId: number, receiverId: number) {
+    const chatsRequestDto = {
+      requesterId: requesterId,
+      receiverId: receiverId,
+    };
+
+    console.log(chatsRequestDto);
+    api.post('api/chats/private-chatroom/accept', chatsRequestDto);
+    //수락시 승낙한 사람
+  }
+
+  // 채팅 방 거절 함수
+  function rejectChat(requesterId: number) {
+    api.get(`api/chats/private-chatroom/reject?requesterId=${requesterId}`);
+  }
+
+  useEffect(() => {
+    const access_token = localStorage.getItem('accessToken');
+    const ws = new WebSocket(
+      `ws://${process.env.NEXT_PUBLIC_WS_API_URL}/notifications?access_token=${access_token}`,
+    );
+    setWebSocket(ws);
+
+    ws.onerror = (error) => {
+      console.error('WebSocket 오류:', error);
+    };
+    // WebSocket 연결이 열리면
+    ws.onopen = () => {
+      console.log('WebSocket 연결됨');
+    };
+    const fetchLoggedInUser = async () => {
+      try {
+        const res = await api.get('/api/users/mypage', {});
+        const data = await res.data;
+        setLoggedInUser(data); // 로그인된 유저 정보 상태 설정
+      } catch (error) {
+        console.error('로그인된 유저 정보 불러오기 실패:', error);
+      }
+    };
+
+    ws.onmessage = (event) => {
+      const notificationData = JSON.parse(event.data); // 메시지 파싱
+
+      // 메시지 타입이 'request'일 때
+      if (notificationData.messageType === 'request') {
+        const requesterId = notificationData.requesterId;
+        const receiverId = notificationData.receiverId;
+        const message = notificationData.message;
+
+        // UI에 채팅 요청 알림을 띄운다.
+        showChatRequestNotification(message, requesterId, receiverId);
+      }
+
+      if (notificationData.messageType === 'reject') {
+        const message = notificationData.message;
+
+        alert(message); // '채팅 요청이 거절되었습니다' 등 메시지 띄우기
+      }
+
+      if (notificationData.messageType === 'accept') {
+        //룸 아이디와 함께 채팅페이지로 이동
+      }
+    };
+
+    fetchLoggedInUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await api.get<UserData[]>('/api/users/all');
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_HTTP_API_URL}users/all`,
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          },
+        );
+
+        // res.json()을 호출해서 JSON 데이터를 가져와야 함
+        const data = await res.json();
+
         const filteredUsers = loggedInUser
-          ? res.data.filter((user) => user.id !== loggedInUser.id)
-          : (res.data as UserData[]);
+          ? data.filter(
+              (user: UserData) => user.nickName !== loggedInUser.nickName,
+            )
+          : (data as UserData[]);
 
         setUsers(filteredUsers);
       } catch (error) {
@@ -35,11 +149,11 @@ const Page = () => {
   const tabLabels = ['1:1 매칭', '그룹 매칭'];
   const tabContents = [
     <OneToOneMatching key="one-to-one" profiles={users} />,
-    <GroupMatching key="group" profiles={mockUserData} />,
+    <GroupMatching key="group" />,
   ];
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col items-center">
+    <div className="relative w-full min-h-screen flex flex-col items-center bg-gray-neutral-900">
       <div className="w-full max-w-3xl min-h-screen flex flex-col items-center pb-[92px]">
         <RadixTabs
           tabLabels={tabLabels}
@@ -47,7 +161,6 @@ const Page = () => {
           disabled={!isConnect}
         />
       </div>
-
       {!isConnect && (
         <div className="absolute inset-0 top-0 w-full max-w-3xl h-full bg-black bg-opacity-75 backdrop-filter backdrop-blur-sm flex items-center justify-center pb-[92px]">
           <p className="text-white text-lg font-semibold text-center">

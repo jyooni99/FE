@@ -1,5 +1,5 @@
 import api from './api';
-import { DBFormattedType, UserType } from '~/types/form';
+import { DBFormattedType, DBUserType, UserType } from '~/types/form';
 import {
   formatFromDBUser,
   formatFromQR,
@@ -27,9 +27,19 @@ export async function login(username: string, password: string) {
 export async function viewAllUser() {
   try {
     const res = await api.get('/api/users/all', undefined);
-    console.log(res);
+    return res.data;
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function getUserById(id: number) {
+  try {
+    const res = await api.get('/api/users/all');
+    return res.data.find((info: DBUserType) => info.id === id);
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 }
 

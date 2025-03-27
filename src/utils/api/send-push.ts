@@ -4,8 +4,8 @@ export async function sendPush(token: string) {
   try {
     const res = await axios.post('/api/send-push', {
       token,
-      title: '✨ 새 소식이 도착했어요!',
-      body: '푸시 알림 테스트 중입니다.',
+      title: '✨ 새로운 채팅 요청이 왔습니다.',
+      body: '3분 안에 수락하지 않으면 자동 취소됩니다.',
     });
 
     console.log('푸시 전송 성공:', res.data);

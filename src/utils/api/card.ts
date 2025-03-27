@@ -6,8 +6,8 @@ import { formatFromQRList, formatToQRDB } from '~/utils/format-form-data';
 export async function addCard(data: QRCodeType) {
   try {
     const formatted = formatToQRDB(data);
-    const res = await api.post('/api/business-cards', formatted);
-    console.log(res);
+    await api.post('/api/business-cards', formatted);
+    alert('명함이 추가되었습니다.');
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
       if (error.response.status === 409) {

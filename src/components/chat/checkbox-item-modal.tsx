@@ -1,4 +1,5 @@
-import Image from 'next/image';
+import CheckBoxChecked from '~/assets/svgs/checkbox-checked.svg';
+import CheckBoxUnchecked from '~/assets/svgs/checkbox-unchecked.svg';
 
 interface CheckboxItemProps {
   label: string;
@@ -24,17 +25,11 @@ const CheckboxItem: React.FC<CheckboxItemProps> = ({
         htmlFor={`checkbox-${label}`}
         className="flex items-center cursor-pointer"
       >
-        <Image
-          src={
-            isChecked
-              ? '/assets/svgs/checkbox-checked.svg'
-              : '/assets/svgs/checkbox-unchecked.svg'
-          }
-          alt={isChecked ? 'Checked' : 'Unchecked'}
-          width={21}
-          height={20}
-          className="flex-grow-0 flex-shrink-0 w-5 h-5 relative"
-        />
+        {isChecked ? (
+          <CheckBoxChecked width={21} height={20} />
+        ) : (
+          <CheckBoxUnchecked width={21} height={20} />
+        )}
         <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#dedede] ml-2">
           {label}
         </p>

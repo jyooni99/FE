@@ -4,7 +4,8 @@ import { useFormContext } from 'react-hook-form';
 import { InputHTMLAttributes, ReactNode, useState } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 import { cn } from '~/utils/cn';
-import Image from 'next/image';
+import Eye from '~/assets/svgs/eye.svg';
+import EyeOff from '~/assets/svgs/eye-off.svg';
 
 const inputVariants = cva(
   'border-none py-2 pl-3 outline-none outline-1 rounded-md bg-neutral-700 text-neutral-400',
@@ -97,17 +98,11 @@ const Input = ({
             onClick={toggleType}
             type="button"
           >
-            <Image
-              className="opacity-60"
-              src={
-                inputType === 'password'
-                  ? '/assets/svgs/eye.svg'
-                  : '/assets/svgs/eye-off.svg'
-              }
-              alt={inputType === 'password' ? '비밀번호 보기' : '비밀번호 숨김'}
-              width={24}
-              height={24}
-            />
+            {inputType === 'password' ? (
+              <Eye className="opacity-60" />
+            ) : (
+              <EyeOff className="opacity-60" />
+            )}
           </button>
         )}
       </div>

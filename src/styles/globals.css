@@ -36,3 +36,19 @@ body {
   perspective-origin: center;
   perspective: 1000px;
 }
+.rc-slider-track {
+  background-color: #07ca7f !important;
+}
+
+.rc-slider-dot {
+  background-color: #a6a6a6 !important; /* 눈금 동그라미 색상 */
+  border: #a6a6a6 !important; /* 눈금 동그라미 색상 */
+}
+
+.rc-slider-mark-text {
+  font-size: 0 !important;
+}
+
+.scan-region-highlight-svg {
+  stroke: #07ca7f !important;
+}

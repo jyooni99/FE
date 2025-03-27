@@ -2,21 +2,39 @@
 
 import { useRouter } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
+import { useEffect, useState } from 'react';
 
 import Button from '~/components/common/button';
 import { useFormStore } from '~/stores/use-form-store';
+import isPWA from '~/utils/is-pwa';
 
 const Page = () => {
+  const [path, setPath] = useState<string>('');
   const router = useRouter();
   const { qrData } = useFormStore();
 
+  useEffect(() => {
+    if (isPWA()) {
+      setPath('/home');
+    } else {
+      setPath('/quick-network');
+    }
+  }, [setPath]);
+
   return (
     <div className="flex flex-col gap-4 min-h-screen px-6 justify-center items-center">
-      <QRCodeSVG value={JSON.stringify(qrData)} />
+      <QRCodeSVG
+        value={JSON.stringify(qrData)}
+        size={180}
+        bgColor="#FFF"
+        fgColor="#000"
+        level="H"
+        marginSize={2}
+      />
       <Button
         size={'full'}
         onClick={() => {
-          router.push('/quick-network');
+          router.push(path);
         }}
       >
         네트워킹존 입장하기

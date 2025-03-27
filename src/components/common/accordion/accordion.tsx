@@ -1,8 +1,9 @@
 import * as React from 'react';
-import classNames from 'classnames';
-import './style.css';
 import * as Accordion from '@radix-ui/react-accordion';
-import Image from 'next/image';
+import classNames from 'classnames';
+import Arrow from '~/assets/svgs/arrow.svg';
+import './style.css';
+
 interface AccordionProps {
   className?: string;
   children?: React.ReactNode;
@@ -56,9 +57,7 @@ const AccordionTrigger = ({
       {...props}
     >
       {children}
-      <Image
-        src="/assets/arrow.svg"
-        alt="Arrow Icon"
+      <Arrow
         width={12}
         height={12}
         unoptimized={true}

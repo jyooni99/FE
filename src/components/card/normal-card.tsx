@@ -6,7 +6,14 @@ import {
   SubMsg,
   TimeAgo,
 } from '../notifications/notify-card';
-import CardNotifyProps from '~/types/card-notify';
+
+interface NormalCardProps {
+  message: string;
+  subMessage?: string;
+  timeStamp?: number;
+  className?: string;
+  isDisabled?: boolean;
+}
 
 const NormalCard = ({
   message,
@@ -14,7 +21,7 @@ const NormalCard = ({
   timeStamp,
   className,
   isDisabled,
-}: CardNotifyProps) => {
+}: NormalCardProps) => {
   return (
     <Card
       className={`w-full max-w-3xl shadow-md mb-2 rounded-lg mx-auto ${className} ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}
@@ -25,7 +32,7 @@ const NormalCard = ({
       <CardBody className={`flex justify-left items-center gap-4 mb-4`}>
         <MsgContainer>
           <MainMsg message={message} />
-          <SubMsg subMessage={subMessage} />
+          <SubMsg subMessage={subMessage ?? ''} />
         </MsgContainer>
       </CardBody>
       <CardFooter className="flex justify-between items-center align-top">

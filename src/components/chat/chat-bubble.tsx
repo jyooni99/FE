@@ -55,7 +55,7 @@ const ChatBubble = ({
       )}
     >
       {variant === 'receiver' && showProfile && imgSrc && (
-        <DefaultProfile size="xs" imgSrc={imgSrc} />
+        <DefaultProfile size="xs" />
       )}
       <div
         className={cn(chatBubbleVariants({ variant, size }), className)}

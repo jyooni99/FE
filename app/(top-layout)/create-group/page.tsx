@@ -1,20 +1,21 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import Button from '~/components/common/button';
+import SliderCareer from '~/components/match/career-slider';
 import ToggleField from '~/components/register/toggle-field';
 import {
   interestOptions,
   jobOptions,
   purposeOptions,
 } from '~/constants/create-group';
-import { careerOptions } from '~/constants/job-options';
 
 const Page = () => {
   const methods = useForm<{
     job: string[];
     interest: string[];
-    career: string[];
+    career: number[];
     participationPurpose: string[];
   }>({
     defaultValues: {
@@ -30,9 +31,17 @@ const Page = () => {
   const isValid = Object.values(selectedOptions).every(
     (valueArr) => valueArr.length > 0,
   );
+  const router = useRouter();
   const onSubmit = handleSubmit((data) => {
     if (data) {
-      console.log(data);
+      // 로컬 스토리지에 데이터 저장
+      const existingGroups = JSON.parse(
+        localStorage.getItem('groupMatchings') || '[]',
+      );
+      existingGroups.push(data);
+      localStorage.setItem('groupMatchings', JSON.stringify(existingGroups));
+
+      router.push('/home');
     }
   });
 
@@ -47,7 +56,7 @@ const Page = () => {
         </p>
       </div>
       <FormProvider {...methods}>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className="space-y-12">
           <ToggleField
             label="직무/직책"
             name="job"
@@ -60,12 +69,7 @@ const Page = () => {
             control={control}
             options={interestOptions}
           />
-          <ToggleField
-            label="경력"
-            name="career"
-            control={control}
-            options={careerOptions}
-          />
+          <SliderCareer name="career" label="경력" />
           <ToggleField
             label="참여목적"
             name="participationPurpose"
@@ -73,7 +77,7 @@ const Page = () => {
             options={purposeOptions}
           />
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 pb-4">
             <Button size={'full'} variant={'black/50'}>
               취소
             </Button>

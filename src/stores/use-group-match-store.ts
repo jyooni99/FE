@@ -4,10 +4,14 @@ interface GroupMember {
   id: number;
   name?: string;
   profileImage?: string;
+  job?: string[];
+  jobValue?: string;
+  interests?: string[];
+  interestJobValue?: string;
 }
 
 interface Group {
-  id: number; // 그룹 ID (채팅방 ID 역할)
+  id: number;
   members: GroupMember[];
 }
 
@@ -19,12 +23,23 @@ interface GroupMatchState {
 export const useGroupMatchStore = create<GroupMatchState>((set) => ({
   groups: [],
 
-  // ✅ 특정 그룹에 멤버 추가
   addMemberToGroup: (groupId, member) =>
     set((state) => ({
       groups: state.groups.map((group) =>
         group.id === groupId && group.members.length < 4
-          ? { ...group, members: [...group.members, member] }
+          ? {
+              ...group,
+              members: [
+                ...group.members,
+                {
+                  id: member.id,
+                  name: member.name,
+                  profileImage: member.profileImage,
+                  jobValue: member.job?.[0] || '',
+                  interestJobValue: member.interests?.[0] || '',
+                },
+              ],
+            }
           : group,
       ),
     })),

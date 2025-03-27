@@ -28,7 +28,7 @@ const itemsVariants = cva(
         primary:
           'h-[40px] px-[18px] py-3 bg-gray-800/60 border border-gray-neutral-500/30 text-gray-neutral-400 data-[state=on]:bg-transparent data-[state=on]:border-green-500 data-[state=on]:text-green-500',
         'primary-small':
-          'px-3 py-1 bg-gray-800/60 border border-gray-neutral-500/30 text-gray-neutral-400 data-[state=on]:bg-transparent data-[state=on]:border-green-500 data-[state=on]:text-green-500',
+          'px-3 py-1 bg-transparent/200 border border-gray-neutral-500/30 text-gray-neutral-400 data-[state=on]:bg-transparent data-[state=on]:border-green-500 data-[state=on]:text-green-500',
       },
     },
     defaultVariants: {

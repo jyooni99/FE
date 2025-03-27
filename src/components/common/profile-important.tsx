@@ -20,7 +20,7 @@ const profileImportantVariants = cva('flex gap-2', {
 interface ProfileImportantProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof profileImportantVariants> {
-  userData: UserData;
+  userData: UserData | null;
   children?: React.ReactNode;
   isTopAligned?: boolean;
   existsJob?: boolean;
@@ -44,11 +44,12 @@ const ProfileImportant = ({
       <DefaultProfile
         size="profileChat"
         className={isTopAligned ? 'mt-[-12px]' : ''}
+        jobValue={userData?.jobValue}
       />
 
       {/* 텍스트 영역 */}
       <div
-        className={`flex flex-col ${layout == 'vertical' ? 'gap-2' : 'gap-1'} `}
+        className={`flex flex-col ${layout === 'vertical' ? 'items-center gap-2' : 'items-start gap-1'} `}
       >
         <h3
           className={cn(
@@ -56,16 +57,16 @@ const ProfileImportant = ({
             layout === 'vertical' ? 'text-center' : 'text-left',
           )}
         >
-          {userData.nickName}
+          {userData?.nickName}
         </h3>
         <div className="flex items-center gap-2 text-body-sm text-[#b0b0b0]">
           {existsJob && (
             <>
-              <p> {userData.jobValue}</p>
+              <p> {userData?.jobValue}</p>
               <div className="w-px h-4" />
             </>
           )}
-          <p>{userData.career}</p>
+          <p>{userData?.career}</p>
         </div>
 
         {/* children 영역에 태그나 추가 정보 등을 넣을 수 있음 */}

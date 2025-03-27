@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import CheckCircle from '~/assets/svgs/check-circle.svg';
 
 const TableUsageRules: React.FC = () => {
   return (
@@ -7,9 +7,7 @@ const TableUsageRules: React.FC = () => {
       <div className="flex flex-col justify-center items-center self-stretch flex-grow-0 flex-shrink-0 gap-3">
         <div className="flex justify-center items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-1">
           <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-2">
-            <Image
-              src="/assets/svgs/check-circle.svg"
-              alt="Check Circle"
+            <CheckCircle
               width={20}
               height={20}
               className="flex-grow-0 flex-shrink-0 w-5 h-5 relative"

@@ -70,6 +70,7 @@ export interface UserType {
 }
 
 export interface DBUserType {
+  id?: number;
   name: string;
   email: string;
   affiliation: string;

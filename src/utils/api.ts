@@ -6,7 +6,7 @@ export const sendChatRequestAPI = async (receiverId: number) => {
   try {
     await api.get('/api/chats/private-chatroom/request', {
       params: {
-        receiverId: receiverId.toString(),
+        receiverId: receiverId,
       },
     });
 

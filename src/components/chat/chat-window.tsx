@@ -19,7 +19,6 @@ interface ChatWindowProps {
   messages: Message[];
   receiverId: number;
   status: 'accepted' | 'pending';
-  receiverProfileImg: string;
   currentUser: string;
   receiverName: string;
   receiverStatus: string;
@@ -27,7 +26,6 @@ interface ChatWindowProps {
 
 const ChatWindow = ({
   messages,
-  receiverProfileImg,
   receiverName,
   receiverStatus,
 }: ChatWindowProps) => {
@@ -91,7 +89,7 @@ const ChatWindow = ({
       <div className="flex-1 overflow-y-auto " ref={chatRef}>
         {/* 프로필 */}
         <div className="flex flex-col items-center p-6 border border-gray-700/60">
-          <DefaultProfile size="profileChat" imgSrc={receiverProfileImg} />
+          <DefaultProfile size="profileChat" />
           <div className="flex flex-col items-center gap-1.5 mt-6">
             <p className="text-lg font-semibold text-center text-[#fefefe] w-[200px]">
               {receiverName}

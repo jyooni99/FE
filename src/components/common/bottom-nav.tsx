@@ -1,53 +1,38 @@
 'use client';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '~/utils/cn';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const bottomNavLinkVariants = cva(
-  'flex items-center justify-center px-4 text-sm font-medium',
-  {
-    variants: {
-      variant: {
-        default: 'text-gray-500',
-        active: 'text-green-500 border-t-2 border-green-500',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  },
-);
+import Home from '~/assets/svgs/home_filled.svg';
+import User from '~/assets/svgs/user_filled.svg';
+import Notifications from '~/assets/svgs/notification_filled.svg';
 
-interface BottomNavLinkProps
-  extends VariantProps<typeof bottomNavLinkVariants> {
+interface BottomNavLinkProps {
   to: string;
-  label: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
 }
-
-const BottomNavLink = ({ to, label }: BottomNavLinkProps) => {
-  const pathname = usePathname(); // 현재 경로 가져오기
-  const isActive = pathname === to; // 활성 상태 확인
-
-  return (
-    <Link
-      href={to}
-      className={cn(
-        bottomNavLinkVariants({ variant: isActive ? 'active' : 'default' }),
-      )}
-    >
-      {label}
-    </Link>
-  );
-};
 
 const BottomNavigation = () => {
   return (
     <nav className="fixed bottom-0 max-w-3xl flex justify-around bg-black h-[92px] w-screen rounded-t-xl">
-      <BottomNavLink to="/home" label="홈" />
-      <BottomNavLink to="/notifications" label="알림" />
-      <BottomNavLink to="/mypage" label="마이페이지" />
+      <BottomNavLink to="/home" icon={Home} />
+      <BottomNavLink to="/notifications" icon={Notifications} />
+      <BottomNavLink to="/mypage" icon={User} />
     </nav>
+  );
+};
+
+const BottomNavLink = ({ to, icon: Icon }: BottomNavLinkProps) => {
+  const pathname = usePathname();
+  const isActive = pathname === to;
+
+  return (
+    <Link
+      href={to}
+      className="flex flex-col items-center justify-center w-full h-full"
+    >
+      <Icon width={32} height={32} fill={isActive ? '#10B981' : '#5C5C5C'} />
+    </Link>
   );
 };
 

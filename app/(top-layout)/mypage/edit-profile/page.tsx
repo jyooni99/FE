@@ -56,11 +56,11 @@ const Page = () => {
                 프로필 정보
               </p>
               <p className="text-body-sm text-gray-neutral-300">
-                입력된 정보는 네트워킹에서 사용할 프로필과 온라인 명함에
+                해당 정보는 네트워킹에서 사용할 프로필과 온라인 명함에
                 반영됩니다.
               </p>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5">
               <SelectField
                 name="job"
                 label="직무 / 직책"

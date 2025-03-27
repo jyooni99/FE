@@ -12,7 +12,7 @@ const CardItem = ({ user, onClick }: CardItemProps) => {
   return (
     <Card key={user.id} onClick={onClick}>
       <CardBody className="flex gap-[10px] p-[10px]">
-        <DefaultProfile size="nameCard" />
+        <DefaultProfile size="nameCard" jobValue={user.job.value} />
         <div className="flex flex-col items-start justify-center gap-[6px]">
           <CardBasic userId={user.name} />
           <div className="flex items-center gap-2 text-body-sm text-[#b0b0b0]">

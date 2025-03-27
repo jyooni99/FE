@@ -1,10 +1,11 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import Input from '../common/input';
 import Button from '../common/button';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import SubTractOn from '~/assets/svgs/subtract-on.svg';
+import SubTract from '~/assets/svgs/subtract.svg';
 
 interface MessageFormData {
   message: string;
@@ -60,16 +61,11 @@ const MessageInput = ({ onSendMessage }: MessageInputProps) => {
           size="sm"
           className="min-w-[48px] min-h-[48px] w-12 h-12 bg-transparent flex items-center justify-center rounded-full hover:bg-[#2C2C2C]/50"
         >
-          <Image
-            src={
-              isTyping
-                ? '/assets/svgs/subtract-on.svg'
-                : '/assets/svgs/subtract.svg'
-            }
-            alt="Send Icon"
-            width={24}
-            height={24}
-          />
+          {isTyping ? (
+            <SubTractOn width={24} height={24} />
+          ) : (
+            <SubTract width={24} height={24} />
+          )}
         </Button>
       </form>
     </FormProvider>

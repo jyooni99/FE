@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import CardDialog from '~/components/mypage/card-dialog';
 import { useFormStore } from '~/stores/use-form-store';
+import ArrowIcon from '~/assets/svgs/arrow.svg';
 
 const Page = () => {
   const [showCard, setShowCard] = useState(false);
@@ -20,12 +20,7 @@ const Page = () => {
           <p className="text-base text-gray-neutral-50 w-full py-5">
             내 정보 수정
           </p>
-          <Image
-            src="/assets/svgs/arrow.svg"
-            width={24}
-            height={24}
-            alt="arrow"
-          />
+          <ArrowIcon width={24} height={24} />
         </Link>
         <button
           className="flex justify-between items-center w-full border-b border-gray-neutral-600 text-left"
@@ -34,12 +29,7 @@ const Page = () => {
           <p className="text-base text-gray-neutral-50 w-full py-5">
             내 명함 보기
           </p>
-          <Image
-            src="/assets/svgs/arrow.svg"
-            width={24}
-            height={24}
-            alt="arrow"
-          />
+          <ArrowIcon width={24} height={24} />
         </button>
         <CardDialog
           open={showCard}
@@ -53,12 +43,7 @@ const Page = () => {
           <p className="text-base text-gray-neutral-50 w-full py-5">
             저장한 명함 목록
           </p>
-          <Image
-            src="/assets/svgs/arrow.svg"
-            width={24}
-            height={24}
-            alt="arrow"
-          />
+          <ArrowIcon width={24} height={24} />
         </Link>
       </div>
     </div>

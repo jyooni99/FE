@@ -23,6 +23,7 @@ export interface ModalProps extends ModalContent {
   triggerButtonLabel?: string;
   triggerButtonVariant?: ButtonVariantProps['variant'];
   customContent?: React.ReactNode;
+  className?: string;
 }
 
 const Modal = ({
@@ -34,6 +35,7 @@ const Modal = ({
   triggerButtonLabel,
   triggerButtonVariant,
   customContent,
+  className = 'bg-[#373734]',
 }: ModalProps) => {
   // const initialModal = { title, subText, buttons };
   const [currentModal, setCurrentModal] = useState<ModalContent>({
@@ -63,7 +65,9 @@ const Modal = ({
       )}
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/60 w-full h-full data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-[#373734] p-3.5 shadow-[var(--shadow-6)] focus:outline-none data-[state=open]:animate-contentShow">
+        <Dialog.Content
+          className={`fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-xl p-3.5 shadow-[var(--shadow-6)] focus:outline-none data-[state=open]:animate-contentShow ${className}`}
+        >
           <Dialog.Title className="text-white text-[15px] font-semibold text-center whitespace-pre-line">
             {modalToRender.title}
           </Dialog.Title>
@@ -80,7 +84,7 @@ const Modal = ({
                     variant={btn.variant}
                     onClick={async () => {
                       if (btn.useStoreTrigger) {
-                        await btn.onClick?.(); // 이 안에서 store.openModal('request-sent', ...) 호출됨
+                        await btn.onClick?.();
                         return;
                       }
 

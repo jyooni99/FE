@@ -1,0 +1,20 @@
+<svg width="current" height="current" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Brand/QrCode/Card" clip-path="url(#clip0_4513_2911)">
+<path id="Vector" d="M24.5 6.5H26.8333C28.4902 6.5 29.8333 7.84315 29.8333 9.5V11.8333" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M8.5 26.5L6.16667 26.5C4.50981 26.5 3.16667 25.1569 3.16667 23.5L3.16667 21.1667" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M29.8333 21.1666V23.5C29.8333 25.1568 28.4902 26.5 26.8333 26.5H24.5" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M3.16667 11.8334L3.16667 9.50004C3.16667 7.84319 4.50981 6.50004 6.16667 6.50004L8.5 6.50004" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect id="Rectangle 91" x="9.83325" y="10.5" width="4" height="4" rx="2" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect id="Rectangle 92" x="19.8333" y="11.1666" width="5.33333" height="0" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect id="Rectangle 95" x="19.8333" y="15.1666" width="5.33333" height="0" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect id="Rectangle 94" x="7.16675" y="17.8334" width="9.33333" height="4.66667" rx="1.5" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_5" d="M20.8333 19.1832L20.8482 19.1666" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_6" d="M24.1667 19.1832L24.1817 19.1666" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_7" d="M20.8332 22.1998L20.8481 22.1832" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_4513_2911">
+<rect width="32" height="32" fill="white" transform="translate(0.5 0.5)"/>
+</clipPath>
+</defs>
+</svg>
