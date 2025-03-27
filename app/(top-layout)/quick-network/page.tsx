@@ -1,22 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import Button from '~/components/common/button';
 import IconRolling from '~/components/common/quick-network/icon-rolling';
 import TextRolling from '~/components/common/quick-network/text.rolling';
 
 import Logo from '~/assets/svgs/logo.svg';
-import CheckBoxTrue from '~/assets/svgs/checkbox-circle-true.svg';
-import CheckBoxFalse from '~/assets/svgs/checkbox-circle-false.svg';
 
 const Page = () => {
   const router = useRouter();
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxClick = () => {
-    setIsChecked(!isChecked);
-  };
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-64px)] px-6 py-8 justify-between items-center bg-[#1C1C1E]">
@@ -42,26 +34,24 @@ const Page = () => {
         </div>
       </div>
 
-      <div
-        className="flex flex-col items-center gap-6 w-full max-w-[327px]"
-        onClick={handleCheckboxClick}
-      >
-        <div className="flex items-start gap-2 w-full cursor-pointer">
-          {isChecked ? <CheckBoxTrue /> : <CheckBoxFalse />}
-          <p className="text-sm text-[#fefefe] flex-1">
-            네트워킹 서비스의 원활한 이용(네트워킹 수락 여부, 테이블 배정
-            알림)을 위해 홈 화면 추가가 필요해요.
-          </p>
-        </div>
+      <div className="flex flex-col items-center gap-6 w-full max-w-[327px]">
+        <Button
+          size={'full'}
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push('/ios-notification');
+          }}
+        >
+          IOS로 입장
+        </Button>
         <Button
           size={'full'}
           onClick={(e) => {
             e.stopPropagation();
             router.push('/home');
           }}
-          disabled={!isChecked}
         >
-          1초만에 홈 화면 추가
+          Android로 입장
         </Button>
       </div>
     </div>

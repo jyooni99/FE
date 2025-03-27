@@ -23,9 +23,12 @@ const Page = () => {
 
   return (
     <div className="flex flex-col gap-4 min-h-screen px-6 justify-center items-center">
+      <p className="text-base font-semibold text-left text-[#fefefe]">
+        입장 시 QR코드를 보여주세요
+      </p>
       <QRCodeSVG
         value={JSON.stringify(qrData)}
-        size={180}
+        size={260}
         bgColor="#FFF"
         fgColor="#000"
         level="H"

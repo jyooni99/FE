@@ -2,13 +2,15 @@ import { Card, CardBody } from '~/components/common/card';
 import DefaultProfile from '~/components/common/default-profile';
 import CardBasic from '~/components/common/card-basic';
 import { QRCodeType } from '~/types/form';
+import { UserData } from '~/types/user.types';
 
 interface CardItemProps {
   user: QRCodeType;
+  userData: UserData;
   onClick: () => void;
 }
 
-const CardItem = ({ user, onClick }: CardItemProps) => {
+const CardItem = ({ userData, user, onClick }: CardItemProps) => {
   return (
     <Card key={user.id} onClick={onClick}>
       <CardBody className="flex gap-[10px] p-[10px]">

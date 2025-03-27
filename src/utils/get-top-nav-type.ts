@@ -12,6 +12,7 @@ const routes = [
   { path: '/mypage', type: 'default', title: '마이페이지' },
   { path: '/qr-reader', type: 'back-arrow', title: '' },
   { path: '/quick-network', type: 'back-arrow', title: '' },
+  { path: '/ios-notification', type: 'back-arrow', title: '' },
   {
     path: '/user-info',
     type: 'back-arrow',

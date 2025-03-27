@@ -43,7 +43,7 @@ function useFormSubmit(redirect: string) {
         clearFormData();
 
         if (entry === 'pre') {
-          router.push('/pre');
+          router.push('/pre/complete');
         } else {
           await login(formattedData.username, formattedData.password);
           await fetchMyQRData();
