@@ -10,7 +10,7 @@ const buttonVariants = cva(
         secondary: 'bg-green-100 text-green-600',
         'gray-700': 'bg-gray-700 text-white',
         red: 'bg-red-500 text-white',
-        'black/50': 'bg-black/50 text-white',
+        'black/70': 'bg-black/70 text-white',
         green: 'bg-[#07ca7f] text-[#fefefe]',
         'black-transparent': 'bg-black/50 text-[#dedede]',
       },

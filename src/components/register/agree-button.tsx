@@ -34,7 +34,7 @@ const AgreeButton = () => {
         variant: 'primary',
         actionType: 'action',
         onClick: () => {
-          setValue('agree', true);
+          setValue('agree', true, { shouldValidate: true });
           clearErrors('agree');
         },
       },

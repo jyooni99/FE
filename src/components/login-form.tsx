@@ -48,15 +48,36 @@ const LoginForm = () => {
     <div className="flex flex-col w-full justify-center items-center">
       <div className="w-full max-w-3xl">
         <FormProvider {...methods}>
+          <p className="text-[22px] whitespace-pre-line pb-20">
+            {`사전 등록 시 작성한 정보로\n 로그인해 주세요.`}
+          </p>
           <form onSubmit={onSubmit} className="flex flex-col gap-4">
-            <Input name="username" placeholder="아이디" />
-            <Input name="password" placeholder="비밀번호" type="password" />
-            <Button type="submit">로그인</Button>
+            <Input name="username" placeholder="아이디 입력" />
+            <Input
+              name="password"
+              placeholder="비밀번호 입력"
+              type="password"
+            />
+            <div className="text-[13px] text-center text-[#a6a6a6] pb-10">
+              <Link href="/account/find-id-pw">아이디﹒비밀번호 찾기</Link>
+            </div>
+            <Button type="submit" size={'full'} className="font-normal">
+              로그인
+            </Button>
+            <Button
+              type="button"
+              size={'full'}
+              variant={'black/70'}
+              className="font-normal"
+              onClick={() => {
+                router.push('/onsite/register/profile');
+              }}
+            >
+              현장등록 하기
+            </Button>
           </form>
         </FormProvider>
-        <div className="text-right text-xs mt-4 mb-8 text-neutral-400">
-          <Link href="/account/find-id-pw">아이디﹒비밀번호 찾기</Link>
-        </div>
+        <div className="text-right text-xs mt-4 mb-8 text-neutral-400"></div>
       </div>
     </div>
   );

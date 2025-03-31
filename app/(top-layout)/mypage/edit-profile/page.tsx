@@ -46,7 +46,6 @@ const Page = () => {
           onSubmit={handleSubmit(() => {
             editProfile(currentData);
             setOriginData(currentData);
-            alert('정보 수정이 완료되었습니다.');
           })}
         >
           <div className="flex flex-col w-full gap-7">

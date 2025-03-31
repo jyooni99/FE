@@ -2,6 +2,7 @@
 
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import Select from 'react-select';
+import { useSearchParams } from 'next/navigation';
 
 import { interestOptions } from '~/constants/interest';
 import { purposeOptions } from '~/constants/purpose';
@@ -13,6 +14,9 @@ import { groupedJobOptions } from '~/constants/job-options';
 import AgreeButton from './agree-button';
 
 const NetworkForm = () => {
+  const searchParams = useSearchParams();
+  const entry = searchParams.get('entry'); // 'pre' or others
+
   const MIN_SELECTION = 1; // 최소 선택 개수
   const MAX_SELECTION = interestOptions.length; // 최대 선택 개수
 
@@ -103,7 +107,7 @@ const NetworkForm = () => {
           </div>
           <div>
             <Button className="py-3" disabled={!isValid}>
-              사전등록 완료!
+              {entry === 'pre' ? '사전등록 완료!' : '현장등록 완료!'}
             </Button>
           </div>
         </form>

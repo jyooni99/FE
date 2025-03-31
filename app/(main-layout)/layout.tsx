@@ -9,7 +9,7 @@ export default function MainLayout({
   return (
     <div className="bg-gray-neutral-900 h-screen">
       <TopNavigation />
-      {children}
+      <div className="w-full pt-[55px]">{children}</div>
       <BottomNavigation />
     </div>
   );

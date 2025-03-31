@@ -65,6 +65,7 @@ export async function editProfile(data: UserType) {
   try {
     const formatted = formatToDBUser(data);
     await api.patch('/api/users', formatted);
+    alert('정보 수정이 완료되었습니다.');
   } catch (error) {
     console.error(error);
   }
