@@ -2,25 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://3.37.80.119/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "x-vercel-deployment-url",
-          "value": "localhost"
-        }
-      ]
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "https://quick-network.duckdns.org/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "x-vercel-deployment-url",
-          "value": "vercel"
-        }
-      ]
+      "destination": "http://3.37.80.119/:path*"
     }
   ]
 }
