@@ -22,9 +22,9 @@ const ChatContent = () => {
   const roomIdParam = searchParams.get('roomId');
   const roomId = roomIdParam ? parseInt(roomIdParam, 10) : null;
   const { websocket, setWebSocket } = useWebSocketStore();
-  const [systemMessages, setSystemMessages] = useState<
-    { type: string; nickname?: string }[]
-  >([]);
+  // const [systemMessages, setSystemMessages] = useState<
+  //   { type: string; nickname?: string }[]
+  // >([]);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -122,17 +122,17 @@ const ChatContent = () => {
     ws.onmessage = (event) => {
       const incomingMessage = JSON.parse(event.data);
 
-      if (incomingMessage.type === 'system') {
-        // 여기서 시스템 메시지 상태를 업데이트해줘야 함
-        setSystemMessages((prev) => [
-          ...prev,
-          {
-            type: incomingMessage.subtype,
-            nickname: incomingMessage.senderName,
-          },
-        ]);
-        return;
-      }
+      // if (incomingMessage.type === 'system') {
+      //   // 여기서 시스템 메시지 상태를 업데이트해줘야 함
+      //   setSystemMessages((prev) => [
+      //     ...prev,
+      //     {
+      //       type: incomingMessage.subtype,
+      //       nickname: incomingMessage.senderName,
+      //     },
+      //   ]);
+      //   return;
+      // }
 
       const formattedMessage = {
         createTime: incomingMessage.createTime, // createTime을 적절한 형식으로 변환
@@ -219,6 +219,7 @@ const ChatContent = () => {
       console.error('메시지 전송 실패:', err);
     }
   };
+
   // 누르면 채팅방에 잇는 모두에게 알림을전송하게 되어있는데 알림을 받으면 ? 다 다음 으로 넘어가게
   // 받으면 다음 창으로 넘어가ㄹ
   return (
@@ -226,14 +227,12 @@ const ChatContent = () => {
       <>
         <ChatWindow
           messages={messages}
-          // status={selectedChat.status}
           currentUser={savedNickName!}
           receiverName={receiverUser?.nickName || 'nickname'}
           receiverStatus="accepted"
           chatRoomId={roomId!}
           receiverJob={receiverUser?.affiliation || '직장 정보 없음'}
-          systemMessages={systemMessages}
-          websocket={websocket!}
+          // systemMessages={systemMessages}
           onSystemMessageSend={(subtype) => handleSendSystemMessage(subtype)}
           onTableStatusSend={(variant, chatRoomId) => {
             if (websocket && websocket.readyState === WebSocket.OPEN) {
@@ -246,7 +245,6 @@ const ChatContent = () => {
               );
             }
           }}
-          // senderName={senderName}
         />
         <div className="h-[60px] border-t border-gray-700">
           <MessageInput onSendMessage={handleSendMessage} />

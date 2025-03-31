@@ -22,8 +22,9 @@ const Page = () => {
   // ✅ 모달 상태 추가
   const [isChatRequestOpen, setIsChatRequestOpen] = useState(false);
   const [chatRequesterId, setChatRequesterId] = useState<number | null>(null);
-  const [chatReceiverId, setChatReceiverId] = useState<number | null>(null);
-
+  const [chatReceiverId] = useState<number | null>(null);
+  const chatRequesterIdRef = useRef<number | null>(null);
+  const chatReceiverIdRef = useRef<number | null>(null);
   useEffect(() => {
     loggedInUserRef.current = loggedInUser;
   }, [loggedInUser]);
@@ -65,13 +66,8 @@ const Page = () => {
   }
 
   // ✅ 채팅 요청 UI 모달을 띄우는 함수
-  function showChatRequestNotification(
-    message: string,
-    requesterId: number,
-    receiverId: number,
-  ) {
+  function showChatRequestNotification(message: string, requesterId: number) {
     setChatRequesterId(requesterId);
-    setChatReceiverId(receiverId);
     setIsChatRequestOpen(true);
   }
 
@@ -97,10 +93,11 @@ const Page = () => {
 
       // 메시지 타입이 'request'일 때
       if (notificationData.messageType === 'request') {
+        chatRequesterIdRef.current = notificationData.requesterId;
+        chatReceiverIdRef.current = notificationData.receiverId;
         showChatRequestNotification(
           notificationData.message,
           notificationData.requesterId,
-          notificationData.receiverId,
         );
       }
 
