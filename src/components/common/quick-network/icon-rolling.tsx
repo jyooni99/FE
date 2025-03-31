@@ -46,14 +46,23 @@ const IconRolling = () => {
     '#FFF280', // Yellow
   ];
 
-  // 랜덤 색상 생성
+  // 랜덤 색상 생성, 중복 방지
   useEffect(() => {
-    setIconColors(
-      Array(icons.length)
-        .fill(null)
-        .map(() => colors[Math.floor(Math.random() * colors.length)]),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const colorPool = [...colors]; // 색상 풀 복사
+    const selectedColors: string[] = [];
+
+    for (let i = 0; i < icons.length; i++) {
+      if (colorPool.length === 0) {
+        // 색상이 부족할 경우, 다시 색상 풀을 초기화
+        colorPool.push(...colors);
+      }
+
+      const randomIndex = Math.floor(Math.random() * colorPool.length);
+      const selectedColor = colorPool.splice(randomIndex, 1)[0];
+      selectedColors.push(selectedColor);
+    }
+
+    setIconColors(selectedColors);
   }, []);
 
   return (

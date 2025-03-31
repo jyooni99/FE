@@ -40,8 +40,7 @@ const MatchOneToOne = ({
         <div className="flex gap-[10px]">
           <DefaultProfile
             size="nameCard"
-            jobValue={userData.jobValue}
-            interestJobValue={userData.interestJobValue}
+            jobValue={userData.jobValue || 'FFFFFF'}
           />
           <CardBasic userId={userData.nickName ?? '익명'} />
         </div>

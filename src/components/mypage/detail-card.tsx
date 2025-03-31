@@ -47,7 +47,7 @@ const DetailCard = ({ user, isShowQR = false }: DetailCardProps) => {
 };
 
 const FrontCard = ({ user }: { user: QRCodeType | null }) => {
-  const color = getHashColor(user?.job.value ?? '');
+  const color = getHashColor(user?.name ?? '');
   const Icon = getIconByJob(user?.job.value);
 
   return (

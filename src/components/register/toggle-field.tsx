@@ -37,7 +37,6 @@ const ToggleField = <T extends FieldValues>({
     <div className={`${className}`}>
       {label && (
         <div className="flex gap-3 content-center">
-          <div className="w-6 h-6 border border-dashed border-[#02e473]" />
           <div>
             <p className="mb-4 font-bold text-body-lg text-gray-neutral-50">
               {label}
@@ -65,9 +64,6 @@ const ToggleField = <T extends FieldValues>({
             if (selected.length < minSelection) {
               return `최소 ${minSelection}개 이상 선택해야 합니다.`;
             }
-            if (selected.length > maxSelection) {
-              return `최대 ${maxSelection}개까지 선택 가능 합니다.`;
-            }
             return true;
           },
         }}
@@ -79,7 +75,7 @@ const ToggleField = <T extends FieldValues>({
             if (maxSelection === 1) {
               const lastSelected = newValue.pop();
               selectedValue = (
-                lastSelected ? [lastSelected] : []
+                lastSelected ? lastSelected : null
               ) as T[typeof name];
             } else {
               // 다중 선택

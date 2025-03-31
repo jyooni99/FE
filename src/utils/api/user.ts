@@ -74,3 +74,31 @@ export async function getUserDetail(userId: number | string) {
   const res = await axios.get(`/user/${userId}`);
   return res.data;
 }
+
+export async function getUserCount() {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      console.error('Access token not found');
+      throw new Error('Access token is required');
+    }
+
+    const res = await axios.get('/api/users/countByInterests', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return res.data.count;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        'Axios 오류:',
+        error.response?.status,
+        error.response?.data,
+      );
+    } else {
+      console.error('알 수 없는 오류:', error);
+    }
+    throw error;
+  }
+}

@@ -32,7 +32,7 @@ const page = () => {
           </p>
         </div>
         <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#fefefe]">
-          리스트에서 ‘홈 화면에 추가' 버튼을 눌러주세요.
+          {`리스트에서 '홈 화면에 추가' 버튼을 눌러주세요.`}
         </p>
         <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#fefefe]">
           홈 화면에 생성된 아이콘을 눌러 서비스를 이용해주세요.

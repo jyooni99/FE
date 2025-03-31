@@ -30,11 +30,10 @@ const SliderCareer: React.FC<SliderCareerProps> = ({
   };
 
   return (
-    <div className="w-100% ">
+    <div className="w-100%">
       {/* ✅ 라벨 추가 */}
       {label && (
-        <div className="flex gap-3 content-center mb-4 ">
-          <div className="w-6 h-6 border border-dashed border-[#02e473]" />
+        <div className="flex gap-3 content-center mb-4">
           <div>
             <p className="font-bold text-body-lg text-gray-neutral-50">
               {label}
@@ -46,7 +45,7 @@ const SliderCareer: React.FC<SliderCareerProps> = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={[2, 3]}
+        defaultValue={[0, 4]} // 초기값을 전체 범위로 설정
         render={({ field: { value, onChange } }) => (
           <>
             <Slider

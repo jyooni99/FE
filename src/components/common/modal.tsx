@@ -3,7 +3,7 @@ import { Dialog } from 'radix-ui';
 import { useState } from 'react';
 import Button, { ButtonVariantProps } from './button';
 
-interface ModalButtonProps extends ButtonVariantProps {
+export interface ModalButtonProps extends ButtonVariantProps {
   label: string;
   actionType: 'trigger' | 'action';
   onClick?: () => void;

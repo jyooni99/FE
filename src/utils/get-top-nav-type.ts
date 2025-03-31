@@ -11,6 +11,7 @@ const routes = [
   { path: '/mypage/edit-profile', type: 'back-arrow', title: '내 정보 수정' },
   { path: '/mypage', type: 'default', title: '마이페이지' },
   { path: '/qr-reader', type: 'back-arrow', title: '' },
+  { path: '/networking-qr-reader', type: 'back-arrow', title: '' },
   { path: '/quick-network', type: 'back-arrow', title: '' },
   { path: '/ios-notification', type: 'back-arrow', title: '' },
   {

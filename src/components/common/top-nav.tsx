@@ -10,7 +10,7 @@ import { ButtonVariantProps } from '~/components/common/button';
 
 import Exit from '~/assets/svgs/exit-icon.svg';
 import BackArrow from '~/assets/svgs/back-arrow.svg';
-import Card from '~/assets/svgs/card.svg';
+import QrCard from '~/assets/svgs/qr-code-ver1.svg';
 
 const TopNavigation = () => {
   const pathname = usePathname();
@@ -64,7 +64,7 @@ const TopNavigation = () => {
             </div>
             <div className="flex items-center gap-2">
               <button onClick={() => router.push('/qr-reader')}>
-                <Card width={32} height={32} />
+                <QrCard width={32} height={32} />
               </button>
             </div>
           </>
@@ -87,7 +87,7 @@ const TopNavigation = () => {
               <p className="text-lg font-semibold text-white">채팅방</p>
               <Exit width={24} height={24} />
             </button>
-            <Card width={32} height={32} />
+            <QrCard width={32} height={32} />
           </>
         )}
 

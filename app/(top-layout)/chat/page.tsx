@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import ChatWindow from '~/components/chat/chat-window';
 import MessageInput from '~/components/chat/message-input';
 import { useSearchParams } from 'next/navigation';
-
+import { useRouter } from 'next/navigation';
 interface Chat {
   id: number;
   name: string;
@@ -38,7 +38,7 @@ const ChatPage = () => {
   const searchParams = useSearchParams();
   const roomId = searchParams.get('roomId');
   console.log(setSelectedChat);
-
+  const router = useRouter();
   const [savedNickName, setSavedNickName] = useState<string | null>(null);
 
   useEffect(() => {
@@ -114,6 +114,29 @@ const ChatPage = () => {
     };
   }, []);
 
+  const exitChatRoom = async () => {
+    if (!roomId) return;
+
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_HTTP_API_URL}/chats/exit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatRoomId: Number(roomId) }),
+      });
+
+      console.log('채팅방 나가기 성공');
+
+      // WebSocket 연결 종료
+      if (websocket) {
+        websocket.close();
+      }
+
+      router.push(`/home`);
+    } catch (err) {
+      console.error('채팅방 나가기 실패:', err);
+    }
+  };
+
   const handleSendMessage = async (message: string) => {
     // 메시지 객체를 서버에서 기대하는 형태에 맞게 수정
     const messageObject = {
@@ -161,6 +184,12 @@ const ChatPage = () => {
           채팅방을 선택해주세요!
         </div>
       )}
+      <button
+        className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
+        onClick={exitChatRoom}
+      >
+        채팅방 나가기
+      </button>
     </div>
   );
 };

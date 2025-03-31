@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import axios from 'axios';
 
 const API_URL = 'http://3.37.80.119:80/chats/private-chatroom'; // 실제 API 주소로 설정
 
@@ -19,26 +20,30 @@ const TestAPIRequest = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(API_URL, {
-        method: 'GET',
+      const response = await axios.get(API_URL, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        console.error('API 요청 오류:', errorMessage);
-        setError(`API 요청 실패: ${errorMessage}`);
-        return;
-      }
-
-      const data = await response.json();
-      console.log('API 요청 성공:', data);
-      setResponseData(data); // 응답 데이터를 상태에 저장
+      console.log('API 요청 성공:', response.data);
+      setResponseData(response.data); // 응답 데이터를 상태에 저장
     } catch (err) {
-      console.error('네트워크 오류:', err);
-      setError('네트워크 오류가 발생했습니다.');
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          console.error('서버 응답 오류:', err.response);
+          setError(`API 요청 실패: ${err.response.statusText}`);
+        } else if (err.request) {
+          console.error('네트워크 오류:', err.request);
+          setError('네트워크 오류가 발생했습니다.');
+        } else {
+          console.error('요청 설정 오류:', err.message);
+          setError('요청 설정 오류가 발생했습니다.');
+        }
+      } else {
+        console.error('알 수 없는 오류:', err);
+        setError('알 수 없는 오류가 발생했습니다.');
+      }
     } finally {
       setLoading(false); // 로딩 종료
     }

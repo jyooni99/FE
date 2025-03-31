@@ -41,16 +41,25 @@ const valueIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   컨설턴트: BirdIcon,
 };
 
-const colors = [
-  '#30B6FD', // Blue
-  '#1EDC93', // Green
-  '#FF9257', // Orange
-  '#FF84EF', // Pink
-  '#856BFF', // Purple
-  '#FE7777', // Red
-  '#FFFFFF', // White
-  '#FFF280', // Yellow
-];
+const categoryColors: Record<string, string> = {
+  '개발자 & 엔지니어': '#30B6FD', // Blue
+  디자이너: '#FE7777', // Red
+  '기획 & 운영': '#FF84EF', // Pink
+  '비지니스 & 마케팅': '#FFF280', // Yellow
+  '스타트업 & 창업자': '#FF6F22', // Custom Color
+  '기타 전문직': '#1EDC93', // Green
+};
+
+// const colors = [
+//   '#30B6FD', // Blue
+//   '#1EDC93', // Green
+//   '#FF9257', // Orange
+//   '#FF84EF', // Pink
+//   '#856BFF', // Purple
+//   '#FE7777', // Red
+//   '#FFFFFF', // White
+//   '#FFF280', // Yellow
+// ];
 
 const defaultProfileVariants = cva(
   'relative rounded-full overflow-hidden bg-gray-neutral-900',
@@ -93,9 +102,51 @@ const DefaultProfile = ({
   const [color, setColor] = useState<string>('');
 
   useEffect(() => {
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    setColor(randomColor);
-  }, []);
+    // 직무 대분류에 따른 색상을 결정
+    let category = '소프트웨어 개발'; // 기본 대분류로 설정 (예: '소프트웨어 개발')
+    const jobCategory = jobValue;
+    if (jobCategory) {
+      if (
+        jobCategory.includes('프론트엔드') ||
+        jobCategory.includes('백엔드') ||
+        jobCategory.includes('풀스택') ||
+        jobCategory.includes('모바일')
+      )
+        category = '개발자 & 엔지니어';
+      else if (jobCategory.includes('AI') || jobCategory.includes('데이터'))
+        category = '개발자 & 엔지니어';
+      else if (jobCategory.includes('클라우드')) category = '개발자 & 엔지니어';
+      else if (jobCategory.includes('디자이너')) category = '디자이너';
+      else if (
+        jobCategory.includes('PM') ||
+        jobCategory.includes('PO') ||
+        jobCategory.includes('서비스 기획') ||
+        jobCategory.includes('콘텐츠 운영')
+      )
+        category = '기획 & 운영';
+      else if (
+        jobCategory.includes('세일즈') ||
+        jobCategory.includes('마케팅') ||
+        jobCategory.includes('투자유치') ||
+        jobCategory.includes('파트너십 기획')
+      )
+        category = '비지니스 & 마케팅';
+      else if (
+        jobCategory.includes('초기 스타트업 창업자') ||
+        jobCategory.includes('투자자') ||
+        jobCategory.includes('엑셀러레이터')
+      )
+        category = '스타트업 & 창업자';
+      else if (
+        jobCategory.includes('연구') ||
+        jobCategory.includes('교육자') ||
+        jobCategory.includes('컨설턴트')
+      )
+        category = '기타 전문직';
+    }
+
+    setColor(categoryColors[category] || '#FFFFFF'); // 카테고리에 따른 색상 설정
+  }, [interestJobValue, jobValue]);
 
   if (!color) return null;
   return (
