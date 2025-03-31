@@ -14,10 +14,10 @@ import Modal from '~/components/common/modal';
 const Page = () => {
   const { isConnect } = useNetworkStore();
   const { users, setUsers } = useUserStore();
-  const [loggedInUser, setLoggedInUser] = useState<UserData | null>(null);
   const loggedInUserRef = useRef<UserData | null>(null);
   const router = useRouter();
   const [, setWebSocket] = useState<WebSocket | null>(null);
+  const { loggedInUser, setLoggedInUser } = useUserStore();
 
   // ✅ 모달 상태 추가
   const [isChatRequestOpen, setIsChatRequestOpen] = useState(false);
@@ -109,11 +109,13 @@ const Page = () => {
       }
 
       if (notificationData.messageType === 'accept') {
-        router.push(`/chat?roomId=${notificationData.chatRoomId}`);
+        const roomId = notificationData.chatRoomId;
+        router.push(`/chat?roomId=${roomId}`);
       }
 
       if (notificationData.messageType === 'notification') {
-        router.push(`/chat?roomId=${notificationData.chatRoomId}`);
+        const roomId = notificationData.chatRoomId;
+        router.push(`/chat?roomId=${roomId}`);
       }
 
       if (notificationData.messageType === 'update') {

@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Modal, { ModalProps } from '../common/modal';
 import CheckboxItem from './checkbox-item-modal';
 import Button from '../common/button';
+import { cancelTable } from '~/utils/api/table';
 
 interface TableApplicationCardProps {
   variant: 'apply' | 'waiting' | 'assigned';
-  tableNumber?: number;
+  tableNumber?: string;
   waitTime?: number;
   onConfirm?: () => void;
   onCancel?: () => void;
+  chatRoomId: number;
+  onConsent?: () => void;
+  currentUser: string;
+  receiverName: string;
 }
-
+// 시간 부분... 맞춰보기..
 const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
-  variant,
+  variant: initialVariant,
   tableNumber,
-  waitTime,
+  waitTime: initialWaitTime,
   onConfirm,
   onCancel,
+  chatRoomId,
+  onConsent,
+  // currentUser,
+  // receiverName,
 }) => {
   const router = useRouter();
   const [isReserved, setIsReserved] = useState(false);
@@ -30,6 +39,53 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
     '기술적 문제가 발생했어요.': false,
     '상대방이 응답하지 않아요.': false,
   });
+  const [showReasonWhyPartnerQuitsModal, setShowReasonWhyPartnerQuitsModal] =
+    useState(false);
+  const [waitTime, setWaitTime] = useState(initialWaitTime);
+  const [variant, setVariant] = useState(initialVariant);
+  const [, setIsQRExpired] = useState(false);
+  const [countdown, setCountdown] = useState(15);
+
+  //필요없
+  // props로 받은 값으로 내부 상태 동기화
+  useEffect(() => {
+    setVariant(initialVariant);
+  }, [initialVariant]);
+
+  useEffect(() => {
+    setWaitTime(initialWaitTime);
+  }, [initialWaitTime]);
+
+  useEffect(() => {
+    if (variant === 'assigned') {
+      const timer = setTimeout(() => {
+        setIsQRExpired(true);
+        console.log('📌 QR 등록 시간 초과됨. isQRExpired 실행됨');
+        if (waitTime && waitTime > 0) {
+          setVariant('waiting');
+        } else {
+          isTableCancelled();
+          setVariant('apply');
+        }
+      }, 15000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [variant, waitTime]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (variant === 'assigned' && countdown > 0) {
+      interval = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [variant, countdown]);
+
+  const isTableCancelled = async () => {
+    await cancelTable(chatRoomId);
+  };
 
   const handleCheckboxChange = (label: string) => {
     setCheckedItems((prev) => ({ ...prev, [label]: !prev[label] }));
@@ -40,35 +96,58 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
     setShowSecondCancelModal(true);
   };
 
-  const handleFinalCancel = () => {
+  const test = () => {
+    console.log('모달 열기 test 실행됨 ✅');
+    setShowReasonWhyPartnerQuitsModal(true);
+  };
+
+  const handleFinalCancel = async () => {
     const selectedReasons = Object.entries(checkedItems)
       .filter(([, isChecked]) => isChecked)
       .map(([label]) => label);
 
     console.log('선택된 취소 사유:', selectedReasons);
 
+    if (chatRoomId) {
+      await cancelTable(chatRoomId);
+      console.log('취소 됐는지요');
+    } else {
+      console.warn('👀 tableNumber가 없음', chatRoomId, '<-chatroomId');
+    }
+
+    // 이거 어디에 쓰는?  onCancel
     setShowSecondCancelModal(false);
     if (onCancel) {
-      onCancel();
+      onCancel(); // handleCancel (API: cancelTable)
     }
     router.push('/home');
   };
 
   const handleReservation = () => {
-    setIsReserved(true);
-    if (onConfirm) {
-      onConfirm();
+    if (onConsent) {
+      onConsent();
+      setIsReserved(true);
     }
   };
 
   const handleCancelNetworking = () => {
     setShowCancelModal(true);
+    if (onCancel) {
+      onCancel();
+    }
   };
 
+  const handleNoAction = () => {
+    setIsModalOpen(false);
+    console.log('아무 동작 없는 거');
+  };
+
+  //필요
   const handleQRRegistration = () => {
-    router.push('/qr-reader');
+    router.push('/networking-qr-reader');
   };
 
+  // ✅
   const getModalProps = (): ModalProps => {
     if (variant === 'apply') {
       return {
@@ -79,13 +158,13 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
             label: '아니요',
             variant: 'black-transparent',
             actionType: 'action',
-            onClick: onCancel,
+            onClick: handleNoAction, // 아무 동작없어야하는.. ✅
           },
           {
             label: '네',
             variant: 'green',
             actionType: 'action',
-            onClick: onConfirm,
+            onClick: onConfirm, // ✅
           },
         ],
         triggerButtonLabel: '테이블 신청',
@@ -98,6 +177,7 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
     return {} as ModalProps;
   };
 
+  //
   const cancelNetworkingModalProps: ModalProps = {
     title: '네트워킹을 취소하시겠어요?',
     subText: '네트워킹을 취소하면 채팅방은 종료돼요.',
@@ -106,13 +186,13 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
         label: '아니요',
         variant: 'black-transparent',
         actionType: 'action',
-        onClick: () => setShowCancelModal(false),
+        onClick: handleNoAction, // 동작 없음  ✅
       },
       {
         label: '네',
         variant: 'green',
         actionType: 'action',
-        onClick: handleFirstCancelConfirm,
+        onClick: handleFirstCancelConfirm, // onCancel액션 ✅
       },
     ],
     isOpen: showCancelModal,
@@ -122,17 +202,46 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
 
   const secondCancelModalProps: ModalProps = {
     title: '네트워킹을 취소하시겠어요?',
-    subText: '',
+    subText: '네트워킹을 취소하면 채팅방은 종료돼요.',
     buttons: [
       {
         label: '제출하고 나가기',
         variant: 'green',
         actionType: 'action',
-        onClick: handleFinalCancel,
+        // onClick: handleFinalCancel, // 찐 나가면서 네트워킹종료.
+        onClick: test,
       },
     ],
     isOpen: showSecondCancelModal,
     onOpenChange: setShowSecondCancelModal,
+    triggerButtonLabel: '',
+    customContent: (
+      <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-2 p-4 rounded-[10px] bg-[#1f1f1f]">
+        {Object.entries(checkedItems).map(([label, isChecked]) => (
+          <CheckboxItem
+            key={label}
+            label={label}
+            isChecked={isChecked}
+            onChange={() => handleCheckboxChange(label)}
+          />
+        ))}
+      </div>
+    ),
+  };
+
+  const showReasonWhyPartnerQuitsProps: ModalProps = {
+    title: '네트워킹이 종료되었어요',
+    subText: `상대방이 다음과 같은 이유로 /n 네트워킹을 진행하기 어려웠어요.`,
+    buttons: [
+      {
+        label: '종료',
+        variant: 'green',
+        actionType: 'action',
+        onClick: handleFinalCancel,
+      },
+    ],
+    isOpen: showReasonWhyPartnerQuitsModal,
+    onOpenChange: setShowReasonWhyPartnerQuitsModal,
     triggerButtonLabel: '',
     customContent: (
       <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-2 p-4 rounded-[10px] bg-[#1f1f1f]">
@@ -214,7 +323,7 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
             onClick={handleQRRegistration}
             className="flex-grow"
           >
-            QR 등록
+            QR 등록 00:{countdown}
           </Button>
         </div>
       );
@@ -263,6 +372,7 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
       {renderButtons()}
       <Modal {...cancelNetworkingModalProps} />
       <Modal {...secondCancelModalProps} />
+      <Modal {...showReasonWhyPartnerQuitsProps} />
     </div>
   );
 };

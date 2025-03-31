@@ -8,7 +8,7 @@ interface UserStore {
   loggedInUser: UserData | null;
   setUsers: (users: UserData[]) => void;
   setSelectedUser: (user: UserData) => void;
-  // setLoggedInUser: (user: UserData) => void;
+  setLoggedInUser: (user: UserData) => void;
 }
 
 export const useUserStore = create<UserStore>((set) => ({
@@ -17,5 +17,5 @@ export const useUserStore = create<UserStore>((set) => ({
   loggedInUser: null,
   setUsers: (users) => set({ users }),
   setSelectedUser: (user) => set({ selectedUser: user }),
-  // setLoggedInUser: (user) => set({ loggedInUser: user }), // ✅ 추가
+  setLoggedInUser: (user) => set({ loggedInUser: user }), // ✅ 추가
 }));

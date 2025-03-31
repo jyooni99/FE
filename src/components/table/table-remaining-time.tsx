@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
-
+import { endsNetwork } from '~/utils/api/table';
+import { useNetworkTimerStore } from '~/stores/use-network-timer-store';
 interface TableRemainingTimeProps {
   initialMinutes: number;
   initialSeconds: number;
+  tableNumber: string;
+  userId: number;
 }
 
 const TableRemainingTime: React.FC<TableRemainingTimeProps> = ({
   initialMinutes,
   initialSeconds,
+  tableNumber,
+  userId,
 }) => {
+  const isFinished = useNetworkTimerStore((state) => state.isFinished);
+  const setIsFinished = useNetworkTimerStore((state) => state.setIsFinished);
   const [timeLeft, setTimeLeft] = useState(
     initialMinutes * 60 + initialSeconds,
   );
-  const [isFinished, setIsFinished] = useState(false);
-
+  // 네트워킹 종료 .. 어쩌고 api 불러주기 ⬇️
   useEffect(() => {
     if (timeLeft <= 0) {
       setIsFinished(true);
+      endsNetwork(tableNumber);
       return;
     }
 
@@ -25,7 +32,7 @@ const TableRemainingTime: React.FC<TableRemainingTimeProps> = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, [timeLeft, userId, tableNumber, setIsFinished]);
 
   const minutes = Math.max(Math.floor(timeLeft / 60), 0);
   const seconds = Math.max(timeLeft % 60, 0);

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
 import ToggleSwitch from '~/components/common/switch';
 import Modal, { ModalProps } from '~/components/common/modal';
@@ -12,12 +12,19 @@ import Exit from '~/assets/svgs/exit-icon.svg';
 import BackArrow from '~/assets/svgs/back-arrow.svg';
 import QRIcon from '~/assets/svgs/qr-code.svg';
 
+import { exitChatRoom as exitChatRoomApi } from '~/utils/api/chats';
+import { useWebSocketStore } from '~/stores/use-websocket-store';
+
 const TopNavigation = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { isConnect, setIsConnect } = useNetworkStore();
   const { type, title } = getTopNavType(pathname);
   const [showModal, setShowModal] = useState(false);
+  const searchParams = useSearchParams();
+  const roomIdParam = searchParams.get('roomId');
+  const roomId = roomIdParam ? parseInt(roomIdParam, 10) : null;
+  const { closeWebSocket } = useWebSocketStore();
 
   const handleExitChatRoom = () => {
     setShowModal(true);
@@ -27,9 +34,22 @@ const TopNavigation = () => {
     setShowModal(false);
   };
 
-  const handleConfirmExit = () => {
-    setShowModal(false);
-    router.push('/home');
+  const handleConfirmExit = async () => {
+    if (!roomId) return;
+
+    try {
+      const success = await exitChatRoomApi(roomId);
+      if (success) {
+        router.push('/home');
+        closeWebSocket();
+      } else {
+        console.error('❌ 채팅방 나가기 실패');
+      }
+    } catch (err) {
+      console.error('❌ 에러 발생:', err);
+    } finally {
+      setShowModal(false);
+    }
   };
 
   const exitChatRoomModalProps: Omit<ModalProps, 'isOpen' | 'onOpenChange'> = {

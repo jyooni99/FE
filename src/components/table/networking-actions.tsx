@@ -2,14 +2,34 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Button from '~/components/common/button';
 import Modal from '~/components/common/modal';
+import { endsNetwork } from '~/utils/api/table';
+import { useNetworkTimerStore } from '~/stores/use-network-timer-store';
+import { useWebSocketStore } from '~/stores/use-websocket-store';
 
-const NetworkingActions: React.FC = () => {
+interface NetworkingActionsProps {
+  tableNumber: string;
+  userId: number;
+}
+
+const NetworkingActions: React.FC<NetworkingActionsProps> = ({
+  tableNumber,
+}) => {
   const router = useRouter();
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+  const isFinished = useNetworkTimerStore((state) => state.isFinished); // ✅ 값 가져오기
+  const { websocket } = useWebSocketStore();
 
-  const handleNetworkingStop = () => {
-    setIsFirstModalOpen(true);
+  const storedRoomId =
+    typeof window !== 'undefined' ? localStorage.getItem('chatRoomId') : null;
+  const chatRoomId = storedRoomId ? parseInt(storedRoomId, 10) : null;
+
+  const handleNetworkingStop = async () => {
+    if (isFinished) {
+      setIsSecondModalOpen(true);
+    } else {
+      setIsFirstModalOpen(true);
+    }
   };
 
   const handleCloseFirstModal = () => {
@@ -21,11 +41,24 @@ const NetworkingActions: React.FC = () => {
     setIsSecondModalOpen(true);
   };
 
-  const handleReturnToList = () => {
+  const handleReturnToList = async () => {
+    await endsNetwork(tableNumber);
     setIsSecondModalOpen(false);
+    if (websocket && websocket.readyState === WebSocket.OPEN && chatRoomId) {
+      websocket.send(
+        JSON.stringify({
+          messageType: 'table',
+          variant: 'end',
+          message: '네트워킹이 종료되었습니다.',
+          chatRoomId: chatRoomId,
+        }),
+      );
+    }
     router.push('/home');
   };
-
+  const handleQRRegistration = () => {
+    router.push('/qr-reader');
+  };
   const firstModalProps = {
     isOpen: isFirstModalOpen,
     onOpenChange: setIsFirstModalOpen,
@@ -69,6 +102,7 @@ const NetworkingActions: React.FC = () => {
         variant="green"
         size="full"
         className="px-7 py-3.5 rounded-[10px]"
+        onClick={handleQRRegistration}
       >
         온라인 명함 교환
       </Button>
@@ -78,7 +112,7 @@ const NetworkingActions: React.FC = () => {
         size="full"
         className="px-7 py-3.5 rounded-[10px]"
       >
-        네트워킹 중단
+        {isFinished ? '네트워킹 종료' : '네트워킹 중단'}
       </Button>
       <Modal {...firstModalProps} />
       <Modal {...secondModalProps} />

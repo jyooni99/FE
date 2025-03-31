@@ -3,17 +3,57 @@
 import { useRouter } from 'next/navigation';
 import QrScanner from 'qr-scanner';
 import { QRCodeSVG } from 'qrcode.react';
+import { useEffect } from 'react';
 
 import QrScannerWrapper from '~/components/common/qr-scanner';
+import { useWebSocketStore } from '~/stores/use-websocket-store';
 import { networkingStart } from '~/utils/api/network';
 
 const QrReader = () => {
   const router = useRouter();
+  const { websocket, setWebSocket } = useWebSocketStore();
+  const storedRoomId = localStorage.getItem('chatRoomId');
+  const chatRoomId = storedRoomId ? parseInt(storedRoomId, 10) : null;
+  useEffect(() => {
+    const access_token = localStorage.getItem('accessToken');
+    const ws = new WebSocket(
+      `ws://${process.env.NEXT_PUBLIC_WS_API_URL}/notifications?access_token=${access_token}`,
+    );
+    setWebSocket(ws);
 
-  const handleNetworkingStart = (result: QrScanner.ScanResult) => {
+    ws.onopen = () => {
+      console.log('WebSocket 연결됨 [QR 페이지]');
+    };
+
+    ws.onmessage = (event) => {
+      const notification = JSON.parse(event.data);
+
+      if (notification.messageType === 'table') {
+        console.log('[📥 받은 메시지]', notification);
+        router.push('/table');
+      }
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [router, setWebSocket]);
+
+  const handleNetworkingStart = async (result: QrScanner.ScanResult) => {
     try {
       const parsedData = JSON.parse(result.data);
-      networkingStart(parsedData.tableNumber);
+
+      await networkingStart(parsedData.tableNumber);
+      if (websocket && websocket.readyState === WebSocket.OPEN) {
+        websocket.send(
+          JSON.stringify({
+            messageType: 'table',
+            message: '네트워킹이 시작됩니다.',
+            chatRoomId: chatRoomId, // 테이블 넘버 전달용
+          }),
+        );
+      }
+      router.push('/table');
     } catch (error) {
       console.error('QR 데이터 처리 실패:', error);
     }

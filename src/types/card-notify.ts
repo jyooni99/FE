@@ -16,6 +16,7 @@ export type RequestMessage = {
   message: string;
   subMessage?: string;
   timeStamp?: number;
+  className?: string;
 };
 
 export type AcceptMessage = {
