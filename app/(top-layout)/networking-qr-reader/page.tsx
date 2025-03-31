@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import QrScanner from 'qr-scanner';
 import { QRCodeSVG } from 'qrcode.react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import QrScannerWrapper from '~/components/common/qr-scanner';
 import { useWebSocketStore } from '~/stores/use-websocket-store';
@@ -12,12 +12,20 @@ import { networkingStart } from '~/utils/api/network';
 const QrReader = () => {
   const router = useRouter();
   const { websocket, setWebSocket } = useWebSocketStore();
-  const storedRoomId = localStorage.getItem('chatRoomId');
-  const chatRoomId = storedRoomId ? parseInt(storedRoomId, 10) : null;
+  const [chatRoomId, setChatRoomId] = useState<number | null>(null);
+
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const storedRoomId = localStorage.getItem('chatRoomId');
+    const id = storedRoomId ? parseInt(storedRoomId, 10) : null;
+    setChatRoomId(id);
+
     const access_token = localStorage.getItem('accessToken');
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+
     const ws = new WebSocket(
-      `ws://${process.env.NEXT_PUBLIC_WS_API_URL}/notifications?access_token=${access_token}`,
+      `${protocol}//${process.env.NEXT_PUBLIC_WS_API_URL}/notifications?access_token=${access_token}`,
     );
     setWebSocket(ws);
 
@@ -49,7 +57,7 @@ const QrReader = () => {
           JSON.stringify({
             messageType: 'table',
             message: '네트워킹이 시작됩니다.',
-            chatRoomId: chatRoomId, // 테이블 넘버 전달용
+            chatRoomId: chatRoomId,
           }),
         );
       }

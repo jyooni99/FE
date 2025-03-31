@@ -2,8 +2,8 @@ import Arrow from '~/assets/svgs/arrow.svg';
 import React from 'react';
 
 interface CardBasicProps {
-  userId: string;
-  requestedNetwork: boolean;
+  userId?: string;
+  requestedNetwork?: boolean;
 }
 
 const CardBasic = ({ userId, requestedNetwork }: CardBasicProps) => {
