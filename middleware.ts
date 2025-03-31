@@ -5,15 +5,15 @@ export function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const token = req.cookies.get('access_token')?.value;
 
-  const PublicPage = ['/', '/pre', '/register', '/account'];
+  const PublicPage = ['/login', '/pre', '/onsite', '/account'];
   const isPublicPage = PublicPage.some((page) => pathname.includes(page));
 
-  if (token && pathname.startsWith('/register')) {
-    return NextResponse.redirect(new URL('/welcome', req.url));
+  if (token && pathname.startsWith('/login')) {
+    return NextResponse.redirect(new URL('/home', req.url));
   }
 
   if (!token && !isPublicPage) {
-    return NextResponse.redirect(new URL('/', req.url));
+    return NextResponse.redirect(new URL('/login', req.url));
   }
 
   return NextResponse.next();

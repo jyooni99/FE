@@ -7,6 +7,16 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/home',
+        permanent: true,
+      },
+    ];
+  },
+
   async rewrites() {
     return [
       {
