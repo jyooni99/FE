@@ -29,6 +29,7 @@ export function formatFormData(data: PartialFormDataType): DBFormattedType {
 // DB -> mypage 등에서 사용할 수 있도록 변환
 export function formatFromDBUser(data: DBUserType): UserType {
   return {
+    nickName: data.nickName,
     name: data.name,
     affiliation: data.affiliation,
     contactInfo: data.contactInfo,
@@ -50,6 +51,7 @@ export function formatFromDBUser(data: DBUserType): UserType {
 // mypage -> DB로 전달
 export function formatToDBUser(data: UserType): DBUserType {
   return {
+    nickName: data.nickName,
     name: data.name,
     affiliation: data.affiliation,
     contactInfo: data.contactInfo,

@@ -60,6 +60,13 @@ const Page = () => {
               </p>
             </div>
             <div className="flex flex-col gap-5">
+              <Input
+                name="nickName"
+                label="닉네임 (변경불가)"
+                disabled
+                className="text-gray-neutral-500"
+              />
+
               <SelectField
                 name="job"
                 label="직무 / 직책"

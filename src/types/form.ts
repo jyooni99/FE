@@ -42,6 +42,7 @@ export interface DBQRCodeType {
 }
 
 export interface DBFormattedType {
+  nickname?: string;
   name: string;
   username: string;
   password: string;
@@ -58,6 +59,7 @@ export interface DBFormattedType {
 }
 
 export interface UserType {
+  nickName?: string;
   name: string;
   email: string;
   affiliation: string;
@@ -70,6 +72,7 @@ export interface UserType {
 }
 
 export interface DBUserType {
+  nickName: string | undefined;
   id?: number;
   name: string;
   email: string;

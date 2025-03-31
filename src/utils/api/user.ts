@@ -46,6 +46,7 @@ export async function getUserById(id: number) {
 export async function fetchProfile() {
   try {
     const res = await api.get('/api/users/mypage', undefined);
+    console.log(res.data);
     return formatFromDBUser(res.data);
   } catch (error) {
     console.error(error);
