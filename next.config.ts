@@ -8,10 +8,15 @@ const withPWA = withPWAInit({
 
 const nextConfig: NextConfig = {
   async rewrites() {
+    const isLocal = process.env.NODE_ENV === 'development';
+    const apiUrl = isLocal
+      ? process.env.NEXT_PUBLIC_HTTP_API_URL
+      : process.env.NEXT_PUBLIC_HTTPS_API_URL;
+
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_HTTP_API_URL}/:path*`,
+        destination: `${apiUrl}/:path*`,
       },
     ];
   },
