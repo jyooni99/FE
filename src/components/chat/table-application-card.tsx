@@ -44,7 +44,7 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
   const [waitTime, setWaitTime] = useState(initialWaitTime);
   const [variant, setVariant] = useState(initialVariant);
   const [, setIsQRExpired] = useState(false);
-  const [countdown, setCountdown] = useState(15);
+  const [countdown, setCountdown] = useState(600);
 
   //필요없
   // props로 받은 값으로 내부 상태 동기화
@@ -67,7 +67,7 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
           isTableCancelled();
           setVariant('apply');
         }
-      }, 15000);
+      }, 600000);
 
       return () => clearTimeout(timer);
     }
@@ -323,7 +323,7 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
             onClick={handleQRRegistration}
             className="flex-grow"
           >
-            QR 등록 00:{countdown}
+            QR 등록 {Math.floor(countdown / 60).toString().padStart(2, '0')} : {(countdown % 60).toString().padStart(2, '0')}
           </Button>
         </div>
       );
