@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import ChatWindow from '~/components/chat/chat-window';
 import MessageInput from '~/components/chat/message-input';
 import { useSearchParams } from 'next/navigation';
@@ -28,7 +28,9 @@ const tempChats: Chat[] = [
   },
 ];
 
-const ChatPage = () => {
+const ChatContent = () => {
+  // ... (기존 ChatPage 컴포넌트의 나머지 로직 유지)
+  // 기존 useEffect, WebSocket 연결, 메시지 처리 로직 모두 이 컴포넌트에 포함
   // const [chats] = useState<Chat[]>(tempChats);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(tempChats[0]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -112,6 +114,7 @@ const ChatPage = () => {
         ws.close();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const exitChatRoom = async () => {
@@ -194,4 +197,13 @@ const ChatPage = () => {
   );
 };
 
+const ChatPage = () => {
+  return (
+    <Suspense fallback={<div>채팅방 로딩 중...</div>}>
+      <ChatContent />
+    </Suspense>
+  );
+};
 export default ChatPage;
+
+export const dynamic = 'force-dynamic';

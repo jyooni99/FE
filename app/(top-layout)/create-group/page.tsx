@@ -13,7 +13,6 @@ import {
 
 import { useState } from 'react';
 import axios from 'axios';
-import { number } from 'zod';
 
 interface GroupChatsFormValues {
   job: string[];
@@ -32,6 +31,7 @@ const Page: React.FC = () => {
     },
   });
   const { control, handleSubmit } = methods;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [, setResponse] = useState<any>(null);
   const router = useRouter();
   const onSubmit = async (data: GroupChatsFormValues) => {

@@ -92,6 +92,7 @@ const QrScannerWrapper = ({
         clearTimeout(scanTimeoutRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
