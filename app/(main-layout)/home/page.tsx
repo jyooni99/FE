@@ -53,6 +53,12 @@ const Page = () => {
     }
   }
 
+  useEffect(() => {
+    if (chatRequesterId !== null && chatReceiverId !== null) {
+      console.log('업데이트된 값:', chatRequesterId, chatReceiverId);
+      // 여기서 상태가 변경된 후 실행할 로직 수행
+    }
+  }, [chatRequesterId, chatReceiverId]);
   // ✅ window 객체에 등록 (테스트용)
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -106,13 +112,11 @@ const Page = () => {
       }
 
       if (notificationData.messageType === 'accept') {
-        const roomId = notificationData.chatRoomId;
-        router.push(`/chat?roomId=${roomId}`);
+        router.push(`/chat?roomId=${notificationData.chatRoomId}`);
       }
 
       if (notificationData.messageType === 'notification') {
-        const roomId = notificationData.chatRoomId;
-        router.push(`/chat?roomId=${roomId}`);
+        router.push(`/chat?roomId=${notificationData.chatRoomId}`);
       }
 
       if (notificationData.messageType === 'update') {
@@ -192,7 +196,8 @@ const Page = () => {
             label: '거절',
             actionType: 'action',
             onClick: () => {
-              if (chatRequesterId !== null) rejectChat(chatRequesterId);
+              if (chatRequesterIdRef.current !== null)
+                rejectChat(chatRequesterIdRef.current);
               setIsChatRequestOpen(false);
             },
             variant: 'black-transparent',
@@ -201,8 +206,14 @@ const Page = () => {
             label: '수락',
             actionType: 'action',
             onClick: () => {
-              if (chatRequesterId !== null && chatReceiverId !== null) {
-                acceptChat(chatRequesterId, chatReceiverId);
+              if (
+                chatRequesterIdRef.current !== null &&
+                chatReceiverIdRef.current !== null
+              ) {
+                acceptChat(
+                  chatRequesterIdRef.current,
+                  chatReceiverIdRef.current,
+                );
               }
               setIsChatRequestOpen(false);
             },
