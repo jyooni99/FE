@@ -114,7 +114,7 @@ const getModalContent = (
         buttons: [
           {
             label: '아니오',
-            variant: 'black/50',
+            variant: 'black-transparent',
             actionType: 'trigger',
             useStoreTrigger: true,
             onClick: closeModal,
@@ -156,7 +156,7 @@ const getModalContent = (
             buttons: [
               {
                 label: '괜찮아요',
-                variant: 'black/50',
+                variant: 'black-transparent',
                 actionType: 'trigger',
                 useStoreTrigger: true,
                 onClick: closeModal,
@@ -181,14 +181,14 @@ const getModalContent = (
         buttons: [
           {
             label: '아니오',
-            variant: 'black/50',
+            variant: 'black-transparent',
             actionType: 'trigger',
             useStoreTrigger: true,
             onClick: closeModal,
           },
           {
             label: '취소하기',
-            variant: 'black/50',
+            variant: 'black-transparent',
             actionType: 'trigger',
             useStoreTrigger: true,
             onClick: async () => {

@@ -78,8 +78,9 @@ const Page = () => {
   // ✅ WebSocket 연결 설정
   useEffect(() => {
     const access_token = localStorage.getItem('accessToken');
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const ws = new WebSocket(
-      `ws://${process.env.NEXT_PUBLIC_WS_API_URL}/notifications?access_token=${access_token}`,
+      `${protocol}://${process.env.NEXT_PUBLIC_WS_API_URL}/notifications?access_token=${access_token}`,
     );
     setWebSocket(ws);
 

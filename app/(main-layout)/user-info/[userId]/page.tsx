@@ -71,7 +71,7 @@ const UserInfoPage = () => {
               거절하면 네트워킹을 진행하지 않아요
             </div>
             <div className="flex w-full gap-[6px] pt-spacing-8">
-              <Button variant="black/50" className="flex-1">
+              <Button variant={'black-transparent'} className="flex-1">
                 거절
               </Button>
               <Button className="flex-1">수락</Button>

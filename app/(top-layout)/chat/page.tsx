@@ -68,9 +68,10 @@ const ChatContent = () => {
       setCurrentUser(token); // 토큰을 통해 사용자 정보를 설정
     }
     const access_token = localStorage.getItem('accessToken');
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
 
     const ws = new WebSocket(
-      `ws://${process.env.NEXT_PUBLIC_WS_API_URL}/chats?chatRoomId=${roomId}&access_token=${access_token}`,
+      `${protocol}://${process.env.NEXT_PUBLIC_WS_API_URL}/chats?chatRoomId=${roomId}&access_token=${access_token}`,
     );
     setWebSocket(ws);
 

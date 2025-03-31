@@ -7,9 +7,10 @@ export const connectWebSocket = (
   onMessage?: (message: string) => void,
   userId?: string,
 ) => {
-  socket = new WebSocket(
-    `ws://${process.env.NEXT_PUBLIC_WS_API_URL}/chats?chatRoomId=${chatRoomId}&userId=${userId}`, // URL에 userId 추가
-  );
+  const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+  const wsUrl = `${protocol}://${process.env.NEXT_PUBLIC_WS_API_URL}/chats?chatRoomId=${chatRoomId}&userId=${userId}`;
+
+  socket = new WebSocket(wsUrl);
 
   if (onMessage) onMessageCallback = onMessage;
 
