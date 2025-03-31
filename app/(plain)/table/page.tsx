@@ -29,8 +29,8 @@ const TablePage: React.FC = () => {
     <div className="flex flex-col items-center justify-center p-4 bg-[#1a1a1a] min-h-screen">
       <div className="flex flex-col items-center gap-12 w-full max-w-md">
         <TableRemainingTime
-          initialMinutes={0}
-          initialSeconds={2}
+          initialMinutes={20}
+          initialSeconds={0}
           tableNumber="1"
           userId={1}
         />

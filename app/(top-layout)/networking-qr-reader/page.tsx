@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import QrScanner from 'qr-scanner';
-import { QRCodeSVG } from 'qrcode.react';
+// import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 
 import QrScannerWrapper from '~/components/common/qr-scanner';
@@ -70,14 +70,14 @@ const QrReader = () => {
   return (
     <>
       {/* 테이블 QR입니다! 테스트할 때만 사용해주시고, 배포할 때는 주석 처리 해주세요! */}
-      <QRCodeSVG
+      {/* <QRCodeSVG
         value={JSON.stringify({ tableNumber: 'T1' })}
         size={200}
         bgColor="#FFF"
         fgColor="#000"
         level="H"
         marginSize={2}
-      />
+      /> */}
       <QrScannerWrapper
         onScan={handleNetworkingStart}
         showButton

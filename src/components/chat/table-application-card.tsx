@@ -73,6 +73,8 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
     }
   }, [variant, waitTime]);
 
+  console.log('qr등록 시간');
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (variant === 'assigned' && countdown > 0) {
@@ -323,7 +325,11 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
             onClick={handleQRRegistration}
             className="flex-grow"
           >
-            QR 등록 {Math.floor(countdown / 60).toString().padStart(2, '0')} : {(countdown % 60).toString().padStart(2, '0')}
+            QR 등록{' '}
+            {Math.floor(countdown / 60)
+              .toString()
+              .padStart(2, '0')}{' '}
+            : {(countdown % 60).toString().padStart(2, '0')}
           </Button>
         </div>
       );
