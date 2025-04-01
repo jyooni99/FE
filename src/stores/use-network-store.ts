@@ -7,8 +7,10 @@ import api from '~/utils/api/api';
 interface UseNetworkStoreType {
   isConnect: boolean; //네트워킹 상태 변경
   isSubscribed: boolean; //알림 수신 여부 변경
+  participatedGroupId: number | null;
   setIsConnect: () => void;
   toggleSubscription: (checked: boolean) => void;
+  setParticipatedGroupId: (id: number | null) => void;
 }
 
 export const useNetworkStore = create<UseNetworkStoreType>()(
@@ -16,6 +18,7 @@ export const useNetworkStore = create<UseNetworkStoreType>()(
     (set, get) => ({
       isConnect: false,
       isSubscribed: false,
+      participatedGroupId: null,
       setIsConnect: async () => {
         const prevConnect = get().isConnect;
         const nextConnect = !prevConnect;
@@ -91,6 +94,10 @@ export const useNetworkStore = create<UseNetworkStoreType>()(
           console.error('알림 설정 오류:', error);
           set({ isSubscribed: !checked }); // 롤백
         }
+      },
+
+      setParticipatedGroupId: (id) => {
+        set({ participatedGroupId: id });
       },
     }),
 
