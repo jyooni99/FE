@@ -1,5 +1,4 @@
 import Button from '../common/button';
-import DefaultProfile from '~/components/common/default-profile'; // DefaultProfile 컴포넌트 추가
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import api from '~/utils/api/api';
@@ -9,22 +8,11 @@ import { FormValues } from './one-to-one';
 
 import { useNetworkStore } from '~/stores/use-network-store';
 import { useUserStore } from '~/stores/use-user-store';
-interface GroupChatRoomResponseDto {
-  id: number;
-  job: string[];
-  members: {
-    username: string;
-    id: number;
-    nickname: string;
-    job: string;
-  }[];
-  career: string;
-  interests: string;
-  participationPurpose: string;
-}
+import DefaultProfile from '../common/default-profile';
+import { GroupChatRoomResponseDto } from '~/types/group.types';
 
 const GroupMatching = () => {
-  const [groups, setGroups] = useState<GroupChatRoomResponseDto[]>([]); // 그룹 데이터를 위한 상태
+  const [groups, setGroups] = useState<GroupChatRoomResponseDto[]>([]);
   const router = useRouter();
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -37,43 +25,31 @@ const GroupMatching = () => {
   const { loggedInUser } = useUserStore();
 
   useEffect(() => {
-    // 그룹 API 데이터를 가져오는 함수
     const fetchGroups = async () => {
       try {
-        const response = await api.get('api/chats/group-chatroom'); // API URL
+        const response = await api.get('api/chats/group-chatroom');
         const groupsData: GroupChatRoomResponseDto[] = response.data;
-        console.log(response);
-        // 그룹 데이터를 상태에 저장
-
         setGroups(groupsData);
-        // const myGroup = groupsData.find((group) =>
-        //   Array.isArray(group.members) && group.members.some((member) => member.username === loggedInUser?.username),);
-
-        // if (myGroup) {
-        //   setParticipatedGroupId(myGroup.id);
-        // }
       } catch (error) {
         console.error('Error fetching groups:', error);
       }
     };
 
-    fetchGroups(); // 컴포넌트 마운트 시 데이터 가져오기
+    fetchGroups();
   }, [loggedInUser, setParticipatedGroupId]);
-  console.log(loggedInUser?.username);
+
   const handleJoinGroup = async (chatRoomId: number) => {
     try {
       const response = await api.post('/api/chats/group-chatroom/join', {
-        chatRoomId, // 요청 데이터 (축약형 구문 사용)
+        chatRoomId,
       });
 
-      console.log('참여 성공:', response.data);
-      alert('그룹에 참여하였습니다!');
-
-      setParticipatedGroupId(chatRoomId);
-      // ✅ API 응답 구조에 맞게 id 필드 사용
+      console.log(response.data);
       const roomId = response.data.id;
       if (roomId) {
-        router.push(`/chat?roomId=${roomId}`);
+        setParticipatedGroupId(roomId);
+        alert('그룹에 참여하였습니다!');
+        // router.push(`/chat?roomId=${roomId}`);
       } else {
         console.error('채팅방 ID가 없습니다.');
       }
@@ -82,13 +58,11 @@ const GroupMatching = () => {
         const axiosError = error as {
           response?: { data?: { message?: string } };
         };
-        console.error('그룹 참여 실패:', axiosError.response?.data?.message);
         alert(
           axiosError.response?.data?.message ||
             '그룹 참여 중 오류가 발생했습니다.',
         );
       } else {
-        console.error('알 수 없는 오류:', error);
         alert('그룹 참여 중 알 수 없는 오류가 발생했습니다.');
       }
     }
@@ -127,19 +101,12 @@ const GroupMatching = () => {
                       cy="4.5"
                       r="4"
                       fill={
-                        // participatedGroupId === group.id ? '#FF9257' : '#07ca7f'
-                        group.members[0]?.username === loggedInUser?.username ||
-                        participatedGroupId === group.id
-                          ? '#FF9257'
-                          : '#07ca7f'
+                        participatedGroupId === group.id ? '#FF9257' : '#07ca7f'
                       }
                     ></circle>
                   </svg>
                   <p className="text-xs font-semibold text-[#fefefe]">
-                    {group.members[0]?.username === loggedInUser?.username ||
-                    participatedGroupId === group.id
-                      ? '참여중'
-                      : '참여 가능'}
+                    {participatedGroupId === group.id ? '참여중' : '참여 가능'}
                   </p>
                 </div>
                 <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative space-x-[-6px]">

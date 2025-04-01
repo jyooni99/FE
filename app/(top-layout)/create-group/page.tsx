@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import Button from '~/components/common/button';
 import SliderCareer from '~/components/match/career-slider';
 import ToggleField from '~/components/register/toggle-field';
+import { useNetworkStore } from '~/stores/use-network-store';
 import {
   interestOptions,
   jobOptions,
@@ -13,6 +14,7 @@ import {
 
 import { useState } from 'react';
 import axios from 'axios';
+import { GroupChatRoomResponseDto } from '~/types/group.types';
 
 interface GroupChatsFormValues {
   job: string[];
@@ -31,8 +33,8 @@ const Page: React.FC = () => {
     },
   });
   const { control, handleSubmit } = methods;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [, setResponse] = useState<any>(null);
+  const [, setResponse] = useState<GroupChatRoomResponseDto | null>(null);
+  const { setParticipatedGroupId } = useNetworkStore();
   const router = useRouter();
   const onSubmit = async (data: GroupChatsFormValues) => {
     // API 호출을 위해 data를 적절히 변환
@@ -48,7 +50,9 @@ const Page: React.FC = () => {
         'api/chats/group-chatroom/create',
         groupChatsRequestDto,
       );
+      setParticipatedGroupId(result.data.id);
       setResponse(result.data);
+
       router.push('/home');
     } catch (error) {
       console.error(error);
