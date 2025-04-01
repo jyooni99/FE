@@ -17,6 +17,7 @@ interface GroupChatRoomResponseDto {
 const GroupMatching = () => {
   const [groups, setGroups] = useState<GroupChatRoomResponseDto[]>([]); // 그룹 데이터를 위한 상태
   const router = useRouter();
+  const [isParticipatedId, setIsParticipatedId] = useState<number | null>(null);
 
   useEffect(() => {
     // 그룹 API 데이터를 가져오는 함수
@@ -42,6 +43,7 @@ const GroupMatching = () => {
 
       console.log('참여 성공:', response.data);
       alert('그룹에 참여하였습니다!');
+      setIsParticipatedId(chatRoomId)
 
       // ✅ API 응답 구조에 맞게 id 필드 사용
       const roomId = response.data.id;
@@ -92,9 +94,9 @@ const GroupMatching = () => {
                     className="flex-grow-0 flex-shrink-0"
                     preserveAspectRatio="none"
                   >
-                    <circle cx="4" cy="4.5" r="4" fill="#FF9257"></circle>
+                    <circle cx="4" cy="4.5" r="4" fill={isParticipatedId === group.id ? '#FF9257' : '#07ca7f' }></circle>
                   </svg>
-                  <p className="text-xs font-semibold text-[#fefefe]">참여중</p>
+                  <p className="text-xs font-semibold text-[#fefefe]">{isParticipatedId === group.id ? '참여중' : '참여 가능'}</p>
                 </div>
                 <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative space-x-[-6px]">
                   {/* 멤버 아바타 */}
