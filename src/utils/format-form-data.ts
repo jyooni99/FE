@@ -30,6 +30,7 @@ export function formatFormData(data: PartialFormDataType): DBFormattedType {
 export function formatFromDBUser(data: DBUserType): UserType {
   return {
     nickName: data.nickName,
+    username: data.username,
     name: data.name,
     affiliation: data.affiliation,
     contactInfo: data.contactInfo,
@@ -52,6 +53,7 @@ export function formatFromDBUser(data: DBUserType): UserType {
 export function formatToDBUser(data: UserType): DBUserType {
   return {
     nickName: data.nickName,
+    username: data.username,
     name: data.name,
     affiliation: data.affiliation,
     contactInfo: data.contactInfo,

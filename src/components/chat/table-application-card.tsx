@@ -71,6 +71,7 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
 
       return () => clearTimeout(timer);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [variant, waitTime]);
 
   console.log('qr등록 시간');

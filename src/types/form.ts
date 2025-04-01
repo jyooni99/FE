@@ -60,6 +60,7 @@ export interface DBFormattedType {
 
 export interface UserType {
   nickName?: string;
+  username: string;
   name: string;
   email: string;
   affiliation: string;
@@ -73,6 +74,7 @@ export interface UserType {
 
 export interface DBUserType {
   nickName: string | undefined;
+  username: string;
   id?: number;
   name: string;
   email: string;

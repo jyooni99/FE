@@ -21,11 +21,39 @@ export async function addCard(data: QRCodeType) {
   }
 }
 
+export async function viewAllCard() {
+  try {
+    const res = await api.get('/api/business-cards', undefined);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function fetchCard() {
   try {
     const res = await api.get('/api/business-cards', undefined);
     const formatted = formatFromQRList(res.data);
     return formatted;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function editCard(data: QRCodeType) {
+  const cards = await viewAllCard();
+  const targetUsername = data.username;
+
+  const hasCard = cards.some(
+    (card: QRCodeType) => card.username === targetUsername,
+  );
+
+  if (!hasCard) return;
+
+  try {
+    const formatted = formatToQRDB(data);
+    const res = await api.put('/api/business-cards', formatted);
+    console.log(res.status);
   } catch (error) {
     console.error(error);
   }

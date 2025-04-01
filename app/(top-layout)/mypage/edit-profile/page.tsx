@@ -16,11 +16,13 @@ import SelectField from '~/components/common/select-field';
 import { UserType } from '~/types/form';
 import { editProfile, fetchProfile } from '~/utils/api/user';
 import { phoneFormatter } from '~/utils/phone-formatter';
+import { useFormStore } from '~/stores/use-form-store';
 
 const Page = () => {
   const router = useRouter();
   const methods = useForm<UserType>();
   const { watch, handleSubmit, setValue } = methods;
+  const { setQRData } = useFormStore();
 
   const currentData = watch(); // 현재 데이터
   const [originData, setOriginData] = useState<UserType | null>(null); // 원본 데이터
@@ -45,6 +47,7 @@ const Page = () => {
         <form
           onSubmit={handleSubmit(() => {
             editProfile(currentData);
+            setQRData(currentData);
             setOriginData(currentData);
           })}
         >
