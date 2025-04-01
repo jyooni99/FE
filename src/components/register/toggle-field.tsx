@@ -18,7 +18,7 @@ interface ToggleFieldProps<T extends FieldValues> {
   maxSelection?: number;
   toggleVariants?: 'black' | 'primary' | 'primary-small';
   className?: string;
-  onChange?: (interest: string) => void;
+  onChange?: (values: string[]) => void;
 }
 
 const ToggleField = <T extends FieldValues>({
@@ -31,6 +31,7 @@ const ToggleField = <T extends FieldValues>({
   maxSelection = 1,
   toggleVariants = 'primary',
   className,
+  onChange, // ✅ `onChange` 추가
 }: ToggleFieldProps<T>) => {
   const { setError, setValue } = useFormContext();
 
@@ -58,51 +59,48 @@ const ToggleField = <T extends FieldValues>({
       <Controller
         name={name}
         control={control}
-        rules={{
-          validate: (value: string[] | undefined) => {
-            const selected = value ?? [];
-
-            if (selected.length < minSelection) {
-              return `최소 ${minSelection}개 이상 선택해야 합니다.`;
-            }
-            return true;
-          },
-        }}
         render={({ field: { value }, fieldState: { error } }) => {
-          const handleValueChange = (newValue: T[typeof name]) => {
-            let selectedValue: T[typeof name];
+          const handleValueChange = (newValue: string[]) => {
+            let selectedValue: string[] = [];
 
-            // 단일 선택
+            // ✅ 단일 선택 모드 (maxSelection=1)
             if (maxSelection === 1) {
-              const lastSelected = newValue.pop();
-              selectedValue = (
-                lastSelected ? lastSelected : null
-              ) as T[typeof name];
-            } else {
-              // 다중 선택
-              if (newValue.length < minSelection) {
-                setError(name, {
-                  type: 'manual',
-                  message: `최소 ${minSelection}개 이상 선택해야 합니다.`,
-                });
-              } else if (newValue.length > maxSelection) {
-                setError(name, {
-                  type: 'manual',
-                  message: `최대 ${maxSelection}개까지 선택 가능 합니다.`,
-                });
-                return;
-              }
+              selectedValue =
+                newValue.length > 0 ? [newValue[newValue.length - 1]] : [];
+            }
+            // ✅ 다중 선택 모드 (maxSelection>1)
+            else {
               selectedValue = newValue;
             }
 
-            setValue(name, selectedValue, { shouldValidate: true });
+            // 최소/최대 선택 수 검증
+            if (selectedValue.length < minSelection) {
+              setError(name, {
+                type: 'manual',
+                message: `최소 ${minSelection}개 이상 선택해야 합니다.`,
+              });
+            } else if (selectedValue.length > maxSelection) {
+              setError(name, {
+                type: 'manual',
+                message: `최대 ${maxSelection}개까지 선택 가능합니다.`,
+              });
+              return;
+            }
+
+            // React Hook Form 업데이트
+            setValue(name, selectedValue as T[typeof name], {
+              shouldValidate: true,
+            });
+
+            // ✅ 부모 컴포넌트에 배열 전달
+            onChange?.(selectedValue);
           };
 
           return (
             <>
               <RadixToggleGroup
                 items={options}
-                value={value}
+                value={value || []} // 초기값 처리
                 onChange={handleValueChange}
                 ariaLabel={`${label} 옵션`}
                 variant={toggleVariants}

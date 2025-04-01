@@ -57,7 +57,11 @@ const AccordionHeader = memo(
 );
 
 const Filter = ({ applyFilters }: FilterProps) => {
-  const methods = useForm<FormValues>(); // ✅ useForm 초기화
+  const methods = useForm<FormValues>({
+    defaultValues: {
+      career: useFilterStore.getState().career, // ✅ Zustand 초기값 사용
+    },
+  });
   const { control } = methods; // control 추출
   const jobs = useFilterStore((state) => state.jobs);
   const interests = useFilterStore((state) => state.interests);
@@ -67,11 +71,12 @@ const Filter = ({ applyFilters }: FilterProps) => {
   const career = useFilterStore((state) => state.career);
   const allJobOptions = jobCategories.flatMap((cat) => cat.subcategories);
   // 선택된 항목 수를 계산
-  const selectedCount =
-    jobs.length +
-    interests.length +
-    participationPurpose.length +
-    career.length;
+  const selectedCount = [
+    ...jobs,
+    ...interests,
+    ...participationPurpose,
+    ...career,
+  ].filter((item) => item !== '').length;
 
   return (
     <FormProvider {...methods}>
@@ -114,12 +119,12 @@ const Filter = ({ applyFilters }: FilterProps) => {
                 control={control}
                 options={interestOptions}
                 maxSelection={9}
-                onChange={(value: string) => {
-                  const currentInterests = useFilterStore.getState().interests;
-                  const updated = currentInterests.includes(value)
-                    ? currentInterests.filter((item) => item !== value)
-                    : [...currentInterests, value];
-                  useFilterStore.getState().setFilter('interests', updated);
+                onChange={(values: string[]) => {
+                  // ✅ 배열로 받음
+                  useFilterStore.getState().setFilter('interests', values);
+                  methods.setValue('interests', values, {
+                    shouldValidate: true,
+                  });
                 }}
               />
             </Accordion.Content>
@@ -160,11 +165,21 @@ const Filter = ({ applyFilters }: FilterProps) => {
               </div>
             </Accordion.Trigger>
             <Accordion.Content className="px-4 py-2">
+              {/* 참여목적 필터 */}
               <ToggleField<FormValues>
                 name="participationPurpose"
                 control={control}
                 options={purposeOptions}
                 maxSelection={8}
+                onChange={(values: string[]) => {
+                  console.log('참여목적 선택:', values); // ✅ 디버깅 로그
+                  useFilterStore
+                    .getState()
+                    .setFilter('participationPurpose', values);
+                  methods.setValue('participationPurpose', values, {
+                    shouldValidate: true,
+                  });
+                }}
               />
             </Accordion.Content>
           </Accordion.Item>
@@ -179,8 +194,12 @@ const Filter = ({ applyFilters }: FilterProps) => {
         <button
           type="button"
           onClick={applyFilters}
-          className={`w-full bg-green-${selectedCount > 0 ? '500' : '300'} text-white py-3 rounded-lg font-semibold hover:bg-green-${selectedCount > 0 ? '600' : '300'} transition-all`}
-          disabled={selectedCount === 0} // 선택된 항목이 없으면 버튼 비활성화
+          className={`w-full ${
+            selectedCount > 0
+              ? 'bg-green-500 hover:bg-green-600'
+              : 'bg-green-300'
+          } text-white py-3 rounded-lg font-semibold transition-all`}
+          disabled={selectedCount === 0} // 필터가 하나라도 선택되면 활성화
         >
           필터 적용
         </button>

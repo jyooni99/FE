@@ -10,12 +10,16 @@ import { useFilterStore } from '~/stores/use-filter-store';
 const FilterWrapper = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const { control, watch, setValue } = useFormContext<FormValues>();
-  const { jobs } = useFilterStore();
 
-  // Zustand jobs ↔ React Hook Form jobs 동기화
+  // Zustand 상태 ↔ React Hook Form 동기화 추가
+  const { jobs, interests, participationPurpose, career } = useFilterStore();
+
   useEffect(() => {
     setValue('jobs', jobs);
-  }, [jobs, setValue]);
+    setValue('interests', interests);
+    setValue('participationPurpose', participationPurpose);
+    setValue('career', career);
+  }, [jobs, interests, participationPurpose, career, setValue]);
 
   const handleFilterToggle = () => {
     setIsFilterVisible((prev) => !prev);

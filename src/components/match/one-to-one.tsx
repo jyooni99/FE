@@ -103,95 +103,21 @@ const OneToOneMatching = ({ profiles }: OneToOneMatchingProps) => {
 
   const filterProfiles = (profiles: UserData[], filters: FormValues) => {
     return profiles.filter((profile) => {
-      // 직무 필터링 (정확한 문자열 일치)
-      const jobMatch = filters.jobs?.length
-        ? filters.jobs.some((job) => {
-            if (typeof job !== 'string' || typeof profile.jobValue !== 'string')
-              return false;
-
-            const normalizedJob = job.trim().replace(/\s/g, '').toLowerCase();
-            const normalizedJobValue = profile.jobValue
-              .trim()
-              .replace(/\s/g, '')
-              .toLowerCase();
-
-            return normalizedJob === normalizedJobValue;
-          })
-        : true;
-
-      // 관심사 필터링
+      // 관심분야 필터링 (전체 일치)
       const interestMatch =
-        (filters.interests ?? []).length > 0
-          ? filters.interests.includes('상관없음') // "상관없음"이면 모든 데이터 허용
-            ? true
-            : (filters.interests ?? []).some((interest) =>
-                profile.interests?.some((profileInterest: string) =>
-                  profileInterest
-                    .trim()
-                    .replace(/\s+/g, '')
-                    .includes(interest.trim().replace(/\s+/g, '')),
-                ),
-              )
-          : true;
+        filters.interests.length === 0 ||
+        filters.interests.every((interest) =>
+          profile.interests?.includes(interest.toLowerCase().trim()),
+        );
 
-      // 참여 목적 필터링
+      // 참여목적 필터링 (부분 일치)
       const purposeMatch =
-        (filters.participationPurpose ?? []).length > 0
-          ? filters.participationPurpose.includes('상관없음') // "상관없음"이면 모든 데이터 허용
-            ? true
-            : (filters.participationPurpose ?? []).some((purpose) =>
-                Array.isArray(profile.participationPurpose)
-                  ? profile.participationPurpose.some(
-                      (profilePurpose: string) =>
-                        profilePurpose.trim() === purpose.trim(),
-                    )
-                  : typeof profile.participationPurpose === 'string' &&
-                    profile.participationPurpose.trim() === purpose.trim(),
-              )
-          : true;
+        filters.participationPurpose.length === 0 ||
+        filters.participationPurpose.some((purpose) =>
+          profile.participationPurpose?.includes(purpose.toLowerCase().trim()),
+        );
 
-      // 슬라이더 인덱스와 실제 경력 범위 매핑
-      const CAREER_MAPPINGS = [
-        { min: 0, max: 0 }, // 학생 (0)
-        { min: 0, max: 1 }, // 신입 (0-1년)
-        { min: 1, max: 3 }, // 주니어 (1-3년)
-        { min: 4, max: 9 }, // 미드레벨 (4-9년)
-        { min: 10, max: 100 }, // 시니어 (10년 이상)
-      ];
-
-      // 경력 필터링
-      const careerMatch = (() => {
-        const [minIdx, maxIdx] = filters.career ?? [0, 4];
-
-        // 슬라이더 인덱스를 실제 연차 범위로 변환
-        const filterMin = CAREER_MAPPINGS[minIdx].min;
-        const filterMax = CAREER_MAPPINGS[maxIdx].max;
-
-        if (typeof profile.career === 'string') {
-          // 신입 프로필 처리 (명시적 차단)
-          if (profile.career.includes('신입')) {
-            return filterMin <= 0 && filterMax >= 1;
-          }
-
-          // 경력 프로필 처리
-          const careerRange = profile.career.match(/\d+/g);
-          if (careerRange) {
-            const profileMin = parseInt(careerRange[0]);
-            const profileMax = parseInt(careerRange[1] ?? careerRange[0]);
-            return profileMin >= filterMin && profileMax <= filterMax;
-          }
-        }
-        return false;
-      })();
-
-      // console.log(`Filters Applied:`, filters);
-      // console.log(`Profile Being Checked:`, profile);
-      // console.log(`Job Match:`, jobMatch);
-      // console.log(`Interest Match:`, interestMatch);
-      // console.log(`Purpose Match:`, purposeMatch);
-      // console.log(`Career Match:`, careerMatch);
-
-      return interestMatch && purposeMatch && careerMatch && jobMatch;
+      return interestMatch && purposeMatch;
     });
   };
 

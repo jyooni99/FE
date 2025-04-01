@@ -5,10 +5,14 @@ import {
   purposeOptions,
 } from '~/constants/create-group';
 
-// 모든 옵션 추출
+// 모든 옵션 추출 (불필요한 값 제거)
 const allJobOptions = jobCategories.flatMap((cat) => cat.subcategories);
-const allInterestOptions = interestOptions.map((opt) => opt.value);
-const allPurposeOptions = purposeOptions.map((opt) => opt.value);
+const allInterestOptions = interestOptions
+  .filter((opt) => opt.value !== '상관없음') // ✅ "상관없음" 제외
+  .map((opt) => opt.value);
+const allPurposeOptions = purposeOptions
+  .filter((opt) => opt.value !== '상관없음') // ✅ "상관없음" 제외
+  .map((opt) => opt.value);
 // 타입 정의
 type FilterCategory = 'jobs' | 'interests' | 'career' | 'participationPurpose';
 
@@ -17,7 +21,10 @@ interface FilterState {
   interests: string[];
   career: number[];
   participationPurpose: string[];
-  setFilter: (category: FilterCategory, values: string[]) => void;
+  setFilter: <K extends keyof FilterState>(
+    category: K,
+    values: FilterState[K],
+  ) => void;
   toggleFilter: (category: FilterCategory, value: number) => void;
   resetFilters: () => void;
   toggleAll: (category: FilterCategory) => void;
@@ -31,14 +38,7 @@ export const useFilterStore = create<FilterState>((set) => ({
   participationPurpose: [],
 
   // 필터 설정 함수
-  setFilter: (category, values) =>
-    set((state) => ({
-      ...state,
-      [category]:
-        category === 'jobs'
-          ? values.filter((v) => allJobOptions.includes(v))
-          : values,
-    })),
+  setFilter: (category, values) => set({ [category]: values }),
 
   // 필터 토글 함수
   toggleFilter: (category, value) =>
@@ -77,13 +77,11 @@ export const useFilterStore = create<FilterState>((set) => ({
           allItems = allPurposeOptions;
           break;
         case 'career':
-          allItems = [0, 1, 2, 3]; // 경력 단계 값 예시
+          allItems = [0, 1, 2, 3]; // 경력 단계 값 (0: 학생, 3: 시니어)
           break;
       }
 
-      const isAllSelected = currentItems.length === allItems.length;
-      return {
-        [category]: isAllSelected ? [] : allItems,
-      };
+      const areAllSelected = currentItems.length === allItems.length;
+      return { [category]: areAllSelected ? [] : allItems };
     }),
 }));
