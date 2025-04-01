@@ -31,7 +31,6 @@ interface ChatWindowProps {
   receiverJob: string;
   currentUser: string;
   receiverName: string;
-  receiverStatus: string;
   chatRoomId: number;
   systemMessages?: { type: string; nickname?: string }[];
   onSystemMessageSend?: (subtype: SystemMessageSubtype) => void;
@@ -42,7 +41,6 @@ const ChatWindow = ({
   messages,
   receiverName,
   receiverJob,
-  receiverStatus,
   currentUser,
   chatRoomId,
   systemMessages,
@@ -173,7 +171,7 @@ const ChatWindow = ({
               {receiverName}
             </p>
             <p className="text-[13px] text-center text-[#a6a6a6] w-[228px]">
-              {receiverStatus}
+              {receiverJob}
             </p>
           </div>
         </div>

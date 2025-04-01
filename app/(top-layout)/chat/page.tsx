@@ -4,18 +4,22 @@ import { useState, useEffect, Suspense } from 'react';
 import ChatWindow from '~/components/chat/chat-window';
 import MessageInput from '~/components/chat/message-input';
 import { useSearchParams } from 'next/navigation';
-import { getReceiverIdFromChatRoom } from '~/utils/api/chats';
 import api from '~/utils/api/api';
-import { viewAllUser } from '~/utils/api/user';
 import { UserData } from '~/types/user.types';
 import { useWebSocketStore } from '~/stores/use-websocket-store';
 export type SystemMessageSubtype = 'notice' | 'agree' | 'complete' | 'timeout';
 
+interface Member {
+  id: number;
+  username: string;
+  nickname?: string;
+  affiliation?: string;
+}
 const ChatContent = () => {
   const [messages, setMessages] = useState<
     { createTime: string; message: string; senderName: string }[]
   >([]);
-  const [currentUser, setCurrentUser] = useState<UserData | null>(null);
+  const [, setCurrentUser] = useState<UserData | null>(null);
   const [receiverUser, setReceiverUser] = useState<UserData | null>(null);
   const [savedNickName, setSavedNickName] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -44,25 +48,51 @@ const ChatContent = () => {
   }, []); // 유저 정보
 
   console.log('receiver', receiverUser);
+  // useEffect(() => {
+  // const fetchReceiverId = async () => {
+  //   if (!roomId || !currentUser) return;
+
+  //   try {
+  //     const allUsers = await viewAllUser();
+  //     const receiver = await getReceiverIdFromChatRoom(
+  //       roomId,
+  //       currentUser.nickName!,
+  //       allUsers,
+  //     );
+  //     setReceiverUser(receiver);
+  //   } catch (err) {
+  //     console.error('상대방 ID 가져오기 실패:', err);
+  //   }
+  // };
+
+  // fetchReceiverId();
+  // }, [roomId, currentUser]);
   useEffect(() => {
-    const fetchReceiverId = async () => {
-      if (!roomId || !currentUser) return;
+    const fetchReceiverInfo = async () => {
+      if (!roomId || !savedNickName) return;
 
       try {
-        const allUsers = await viewAllUser();
-        const receiver = await getReceiverIdFromChatRoom(
-          roomId,
-          currentUser.nickName!,
-          allUsers,
+        const res = await api.get(`/api/chats/${roomId}`);
+        const chatRoom = res.data;
+        console.log(chatRoom);
+
+        const otherUser = chatRoom.members.find(
+          (member: Member) => member.username !== savedNickName,
         );
-        setReceiverUser(receiver);
-      } catch (err) {
-        console.error('상대방 ID 가져오기 실패:', err);
+
+        if (otherUser) {
+          // 필요한 경우, 다른 API 호출을 통해 추가 정보를 가져올 수 있습니다.
+          // const userInfo = await api.get(`/api/users/${otherUser.id}`);
+          // setReceiverUser(userInfo.data);
+          setReceiverUser(otherUser); // 예시로, 직접 otherUser를 설정합니다.
+        }
+      } catch (error) {
+        console.error('상대방 정보 가져오기 실패:', error);
       }
     };
 
-    fetchReceiverId();
-  }, [roomId, currentUser]);
+    fetchReceiverInfo();
+  }, [roomId, savedNickName]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -229,7 +259,6 @@ const ChatContent = () => {
           messages={messages}
           currentUser={savedNickName!}
           receiverName={receiverUser?.nickName || 'nickname'}
-          receiverStatus="accepted"
           chatRoomId={roomId!}
           receiverJob={receiverUser?.affiliation || '직장 정보 없음'}
           // systemMessages={systemMessages}

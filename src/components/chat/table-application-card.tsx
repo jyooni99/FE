@@ -340,7 +340,7 @@ const TableApplicationCard: React.FC<TableApplicationCardProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center flex-grow-0 flex-shrink-0 w-[375px] gap-4 px-5 pt-5 pb-4 bg-[#3a3a3a]/60 backdrop-blur-[5px]">
+    <div className="flex flex-col justify-center items-center flex-grow-0 flex-shrink-0 max-w-[768px] m-auto gap-4 px-5 pt-5 pb-4 bg-[#3a3a3a]/60 backdrop-blur-[5px]">
       <div className="flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-2.5">
         <div className="flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 gap-1.5 px-1">
           <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-2">
