@@ -1,9 +1,11 @@
-import Filter from '~/components/match/filter';
 import Button from '../common/button';
 import DefaultProfile from '~/components/common/default-profile'; // DefaultProfile 컴포넌트 추가
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import api from '~/utils/api/api';
+import { FormProvider, useForm } from 'react-hook-form';
+import FilterWrapper from './filter-wrapper';
+import { FormValues } from './one-to-one';
 
 interface GroupChatRoomResponseDto {
   id: number;
@@ -17,6 +19,14 @@ interface GroupChatRoomResponseDto {
 const GroupMatching = () => {
   const [groups, setGroups] = useState<GroupChatRoomResponseDto[]>([]); // 그룹 데이터를 위한 상태
   const router = useRouter();
+  const methods = useForm<FormValues>({
+    defaultValues: {
+      interests: [],
+      participationPurpose: [],
+      career: [0, 4],
+    },
+  });
+
   const [isParticipatedId, setIsParticipatedId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -43,7 +53,7 @@ const GroupMatching = () => {
 
       console.log('참여 성공:', response.data);
       alert('그룹에 참여하였습니다!');
-      setIsParticipatedId(chatRoomId)
+      setIsParticipatedId(chatRoomId);
 
       // ✅ API 응답 구조에 맞게 id 필드 사용
       const roomId = response.data.id;
@@ -71,8 +81,11 @@ const GroupMatching = () => {
 
   return (
     <div className="flex flex-col items-center">
-      {/* 필터 컴포넌트 */}
-      <Filter />
+      <FormProvider {...methods}>
+        {/* 필터 컴포넌트 */}
+        <FilterWrapper />
+        {/* 나머지 UI */}
+      </FormProvider>
 
       {/* 그룹 데이터 렌더링 */}
       <div className="w-full max-w-4xl mt-5">
@@ -94,9 +107,18 @@ const GroupMatching = () => {
                     className="flex-grow-0 flex-shrink-0"
                     preserveAspectRatio="none"
                   >
-                    <circle cx="4" cy="4.5" r="4" fill={isParticipatedId === group.id ? '#FF9257' : '#07ca7f' }></circle>
+                    <circle
+                      cx="4"
+                      cy="4.5"
+                      r="4"
+                      fill={
+                        isParticipatedId === group.id ? '#FF9257' : '#07ca7f'
+                      }
+                    ></circle>
                   </svg>
-                  <p className="text-xs font-semibold text-[#fefefe]">{isParticipatedId === group.id ? '참여중' : '참여 가능'}</p>
+                  <p className="text-xs font-semibold text-[#fefefe]">
+                    {isParticipatedId === group.id ? '참여중' : '참여 가능'}
+                  </p>
                 </div>
                 <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative space-x-[-6px]">
                   {/* 멤버 아바타 */}

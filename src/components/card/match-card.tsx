@@ -92,9 +92,20 @@ const MatchCard = ({
             <MatchGroup
               groupData={{
                 job: userData.job || [],
-                career: userData.career || [],
+                career: Array.isArray(userData.career)
+                  ? userData.career
+                  : typeof userData.career === 'string'
+                    ? userData.career.match(/\d+/g)?.map(Number) || [
+                        0,
+                        Infinity,
+                      ] // 문자열에서 숫자 추출 후 변환
+                    : [0, Infinity], // 기본값 설정
                 interest: userData.interests || [],
-                purpose: userData.participationPurpose || [],
+                purpose: Array.isArray(userData.participationPurpose)
+                  ? userData.participationPurpose
+                  : userData.participationPurpose
+                    ? [userData.participationPurpose]
+                    : [],
               }}
             />
           ) : (

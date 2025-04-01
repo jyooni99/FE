@@ -60,7 +60,6 @@ const AccordionTrigger = ({
       <Arrow
         width={12}
         height={12}
-        unoptimized={true}
         className="transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)]"
       />
     </Accordion.Trigger>

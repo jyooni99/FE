@@ -3,13 +3,17 @@ import { Controller, Control } from 'react-hook-form';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
-interface CareerFormValues {
-  [key: string]: number[] | string;
+// FilterState 타입 명시적 정의
+interface FilterState {
+  jobs: string[];
+  interests: string[];
+  participationPurpose: string[];
+  career: number[];
 }
 
 interface SliderCareerProps {
-  control?: Control<CareerFormValues>;
-  name: string;
+  control?: Control<FilterState>;
+  name: keyof FilterState; // ✅ keyof FilterState로 제한
   label?: string;
 }
 
@@ -31,7 +35,6 @@ const SliderCareer: React.FC<SliderCareerProps> = ({
 
   return (
     <div className="w-100%">
-      {/* ✅ 라벨 추가 */}
       {label && (
         <div className="flex gap-3 content-center mb-4">
           <div>
@@ -45,7 +48,7 @@ const SliderCareer: React.FC<SliderCareerProps> = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={[0, 4]} // 초기값을 전체 범위로 설정
+        defaultValue={[0, 4]}
         render={({ field: { value, onChange } }) => (
           <>
             <Slider
@@ -53,7 +56,7 @@ const SliderCareer: React.FC<SliderCareerProps> = ({
               min={0}
               max={4}
               step={1}
-              value={value as number[]}
+              value={Array.isArray(value) ? value.map(Number) : [0, 4]}
               onChange={(newValue) => onChange(newValue as number[])}
               railStyle={{
                 backgroundColor: '#85858530',
