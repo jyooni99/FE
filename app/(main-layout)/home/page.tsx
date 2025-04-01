@@ -11,6 +11,7 @@ import { useUserStore } from '~/stores/use-user-store';
 import { UserData } from '~/types/user.types';
 import Modal from '~/components/common/modal';
 import { useFormStore } from '~/stores/use-form-store';
+import { formatFromQR } from '~/utils/format-form-data';
 
 const Page = () => {
   const { isConnect } = useNetworkStore();
@@ -132,7 +133,8 @@ const Page = () => {
       try {
         const res = await api.get('/api/users/mypage');
         setLoggedInUser(res.data);
-        setQRData(res.data);
+        const formatted = formatFromQR(res.data);
+        setQRData(formatted);
       } catch (error) {
         console.error('로그인된 유저 정보 불러오기 실패:', error);
       }
